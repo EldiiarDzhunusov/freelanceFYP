@@ -1,2 +1,4 @@
-package com.uca.freelance.DataAccessLayer.Entities;public class Freelancer {
+package com.uca.freelance.DataAccessLayer.Entities;
+
+public class Freelancer {
 }
