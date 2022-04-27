@@ -2,13 +2,18 @@ package com.uca.freelance.PresentationLayer.Controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("LandingPage")
-public class LandingPageController {
+@RequestMapping("FreelancerLogIn")
+public class FreelancerLogInController {
+
     @GetMapping
-    public String landingPage(){
-        return "landingPage";
+    public String FreelancerLogInPage(){
+        return "freelancerLogIn";
     }
+
+//    @PostMapping
+//    public String Freelance
 }
