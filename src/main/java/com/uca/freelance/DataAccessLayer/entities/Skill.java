@@ -1,4 +1,4 @@
-package com.uca.freelance.DataAccessLayer.Entities;
+package com.uca.freelance.DataAccessLayer.entities;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,5 +13,5 @@ public class Skill {
     private int id;
 
     @ManyToMany(mappedBy = "skillSet")
-    Set<Freelancer> freelancerSet;
+    Set<User> freelancerSet;
 }

@@ -1,4 +1,4 @@
-package com.uca.freelance.DataAccessLayer.Entities;
+package com.uca.freelance.DataAccessLayer.entities;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,4 +13,5 @@ public class Employer {
     private String firstName;
     private String secondName;
     private String email;
+
 }

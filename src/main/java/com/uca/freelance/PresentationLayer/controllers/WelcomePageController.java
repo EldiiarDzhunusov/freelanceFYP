@@ -1,14 +1,15 @@
-package com.uca.freelance.PresentationLayer.Controllers;
+package com.uca.freelance.PresentationLayer.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("EmployerLogIn")
-public class EmployerLogInController {
+@RequestMapping
+public class WelcomePageController {
+
     @GetMapping
-    public String EmployerLogIn(){
-        return "employerLogIn";
+    public String WelcomePage(){
+        return "welcomePage";
     }
 }
