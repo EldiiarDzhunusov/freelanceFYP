@@ -1,4 +1,4 @@
-package com.uca.freelance.DataAccessLayer.entities;
+package com.uca.freelance.DataAccessLayer.models;
 
 
 public enum Role {

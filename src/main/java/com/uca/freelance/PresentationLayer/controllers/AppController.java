@@ -1,8 +1,11 @@
 package com.uca.freelance.PresentationLayer.controllers;
 
+import com.uca.freelance.BussinessLogicLayer.serviceImplementations.CustomUserDetailsService;
 import com.uca.freelance.DataAccessLayer.entities.User;
+import com.uca.freelance.DataAccessLayer.models.CustomUserDetails;
 import com.uca.freelance.DataAccessLayer.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -20,6 +24,7 @@ public class AppController {
 
     @Autowired
     private UserRepository userRepository;
+
 
     @GetMapping("")
     public String ViewHomePage(){
@@ -45,6 +50,7 @@ public class AppController {
     public String listUsers(Model model){
         List<User> userList = userRepository.findAll();
         model.addAttribute("listUsers",userList);
+
         return "users";
     }
 
@@ -76,11 +82,23 @@ public class AppController {
     }
 
     @GetMapping("users/delete/{id}")
-    public String deleteUser(@PathVariable(name = "id") Long id, Model model){
-        userRepository.deleteById(id);
+    public String deleteUser(@PathVariable(name = "id") Long id, Principal principal, Model model){
+        User user = userRepository.findByEmail(principal.getName());
+        if(user.getId()==id){
+            userRepository.deleteById(id);
+            List<User> userList = userRepository.findAll();
+            model.addAttribute("listUsers",userList);
+            return "users";
+        }else{
+            throw new IllegalArgumentException("User do not have permission to delete this user");
+        }
 
-        List<User> userList = userRepository.findAll();
-        model.addAttribute("listUsers",userList);
-        return "users";
+    }
+
+    @GetMapping("users/profile")
+    public String profileInfo(Principal principal, Model model){
+        User user = userRepository.findByEmail(principal.getName());
+        model.addAttribute("user",user);
+        return "profile";
     }
 }

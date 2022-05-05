@@ -3,7 +3,6 @@ package com.uca.freelance;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.uca.freelance.DataAccessLayer.entities.Role;
 import com.uca.freelance.DataAccessLayer.entities.User;
 import com.uca.freelance.DataAccessLayer.repositories.UserRepository;
 import org.junit.jupiter.api.Test;

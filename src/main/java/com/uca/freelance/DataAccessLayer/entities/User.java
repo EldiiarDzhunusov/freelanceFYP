@@ -3,6 +3,7 @@ package com.uca.freelance.DataAccessLayer.entities;
 import lombok.Getter;
 import lombok.Setter;
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -23,6 +24,15 @@ public class User {
     private String firstName;
     @Column(name = "last_name")
     private String lastName;
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_skill",
+            joinColumns = @JoinColumn(
+                    name = "user_id",referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(
+                    name = "skill_id", referencedColumnName = "id"))
+    private Set<Skill> userSkills;
 
 //    private Role role;
 
