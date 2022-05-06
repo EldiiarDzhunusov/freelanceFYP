@@ -17,7 +17,7 @@
         <div class="m-3">
 
             <div class="form-group row">
-                <label class="col-4 col-form-label">E-mail: </label>
+                <label class="col-4 col-form-label">Id</label>
                 <div class="col-8">
                     <input type="number" th:field="*{id}" class="form-control" readonly />
                 </div>
@@ -33,7 +33,7 @@
             <div class="form-group row">
                 <label class="col-4 col-form-label">Password: </label>
                 <div class="col-8">
-                    <input type="password" th:field="*{password}" class="form-control"/>
+                    <input type="hidden" th:field="*{password}" class="form-control" value="th:text='${user.password}'"/>
                 </div>
             </div>
 
@@ -52,7 +52,7 @@
             </div>
 
             <div>
-                <button type="submit" class="btn btn-primary">Sign Up</button>
+                <button type="submit" class="btn btn-primary">Update</button>
             </div>
         </div>
     </form>

@@ -36,6 +36,8 @@ public class User {
 
 //    private Role role;
 
+//    private String description;
+
     public User() {
     }
 
