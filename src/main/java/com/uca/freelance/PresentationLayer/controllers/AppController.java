@@ -1,11 +1,8 @@
 package com.uca.freelance.PresentationLayer.controllers;
 
-import com.uca.freelance.BussinessLogicLayer.serviceImplementations.CustomUserDetailsService;
 import com.uca.freelance.DataAccessLayer.entities.User;
-import com.uca.freelance.DataAccessLayer.models.CustomUserDetails;
 import com.uca.freelance.DataAccessLayer.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,10 +11,10 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class AppController {
@@ -54,7 +51,7 @@ public class AppController {
         return "users";
     }
 
-    @GetMapping("/users/edit/{id}")
+    @GetMapping("/users/edit/profile/{id}")
     public String showUpdateForm(@PathVariable("id") Long id, Model model){
         User user = userRepository.findById(id).orElseThrow(()
                 -> new IllegalArgumentException("Invalid user Id: " +id));
@@ -63,7 +60,7 @@ public class AppController {
     }
 
 
-    @PostMapping("users/update/{id}")
+    @PostMapping("users/update/profile/{id}")
     public String updateUser(@PathVariable("id") Long id, @Validated User user,
                              BindingResult result, Model model){
         if(result.hasErrors()){
@@ -96,10 +93,40 @@ public class AppController {
 
     }
 
-    @GetMapping("users/profile")
-    public String profileInfo(Principal principal, Model model){
-        User user = userRepository.findByEmail(principal.getName());
-        model.addAttribute("user",user);
-        return "profile";
+    @GetMapping("users/profile/{id}")
+    public String profileInfo(@PathVariable(name = "id") Long id,Principal principal, Model model){
+
+        Optional<User> user = userRepository.findById(id);
+
+        if(user.isPresent()){
+            model.addAttribute("user",user.get());
+            return "profile";
+        }else{
+            return "index";
+        }
+
+
     }
+
+    @GetMapping("users/edit/password/{id}")
+    public String showUpdatePasswordForm(@PathVariable(name = "id") Long id,Principal principal, Model model){
+        Optional<User> user = userRepository.findById(id);
+
+        if(user.isPresent()){
+            model.addAttribute("user",user.get());
+            return "update_password";
+        }
+        return "index";
+
+    }
+
+    @PostMapping("users/update/password/{id}")
+    public String updatePassword(@PathVariable(name = "id") Long id, @Validated User user, BindingResult result, Model model){
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encodedPassword);
+        userRepository.save(user);
+        return "users";
+    }
+
 }

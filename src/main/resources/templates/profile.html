@@ -11,7 +11,7 @@
     </div>
 
     <td th:each="user : ${user}">
-        <p><a th:href="@{~/users/edit/{id}(id = ${user.id})}">Edit</a></p>
+        <p><a th:href="@{~/users/edit/profile/{id}(id = ${user.id})}">Edit</a></p>
         <p th:text="${user.email}"></p>
         <p th:text="${user.firstName}"></p>
         <p th:text="${user.lastName}"></p>
