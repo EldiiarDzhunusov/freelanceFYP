@@ -18,5 +18,12 @@ public class Skill {
     public String name;
 
     @ManyToMany(mappedBy = "userSkills")
-    private Collection<User> userSet;
+    private Collection<User> userList;
+
+    public Skill() {
+    }
+
+    public Skill(String name) {
+        this.name = name;
+    }
 }
