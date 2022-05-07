@@ -153,7 +153,7 @@ public class UserController {
             model.addAttribute("userSkills", user.get().getUserSkills());
             model.addAttribute("skills",skillRepository.findAll());
             model.addAttribute("user",user.get());
-            return "update_skills";
+            return "user_update_skills";
         }
         return "index";
     }

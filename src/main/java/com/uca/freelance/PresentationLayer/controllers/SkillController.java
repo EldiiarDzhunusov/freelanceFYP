@@ -30,7 +30,6 @@ public class SkillController {
     public String skillDetails(@PathVariable("id") Long id, Model model){
         Skill skill = skillRepository.getById(id);
         model.addAttribute("skill",skill);
-        //show users as well
         return "skill_details";
     }
 
@@ -38,19 +37,19 @@ public class SkillController {
     public String skillsEdit(@PathVariable("id") Long id, Model model){
         Skill skill = skillRepository.getById(id);
         model.addAttribute("skill",skill);
-        return null;
+        return "skill_update";
     }
 
     @PostMapping("skills/update/{id}")
     public String skillsUpdate(@PathVariable("id") Long id, @Validated Skill skill){
         skillRepository.save(skill);
-        return null;
+        return "redirect:/skills";
     }
 
     @GetMapping("skills/new")
     public String showNewSkillForm(Model model){
         model.addAttribute("skill", new Skill());
-        return null;
+        return "skill_create_form";
     }
 
     @PostMapping("skills/create")
