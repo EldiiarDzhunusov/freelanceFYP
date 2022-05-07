@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Update Skills</title>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.js-example-basic-multiple').select2();
+        });
+    </script>
+</head>
+<body>
+<div class="container text-center">
+    <div>
+        <h1>Update Skills</h1>
+    </div>
+<!--    <form th:action="@{/users/update/skills/{id}(id = ${user.id})}" th:object="${newSkills}">-->
+        <select class="js-example-basic-multiple" name="states[]" multiple="multiple">
+
+            <option th:each="skill : ${skills}" th:value="${skill.getId()}" th:text="${skill.getName()}"></option>
+
+        </select>
+<!--    </form>-->
+
+
+
+
+</div>
+
+</body>
+
+</html>

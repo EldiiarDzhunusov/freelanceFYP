@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.Set;
 
 @Entity
@@ -17,5 +18,5 @@ public class Skill {
     public String name;
 
     @ManyToMany(mappedBy = "userSkills")
-    private Set<User> userSet;
+    private Collection<User> userSet;
 }

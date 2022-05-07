@@ -1,8 +1,10 @@
 package com.uca.freelance.DataAccessLayer.entities;
 
+import com.uca.freelance.DataAccessLayer.models.Role;
 import lombok.Getter;
 import lombok.Setter;
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.Set;
 
 @Entity
@@ -27,16 +29,16 @@ public class User {
 
     @ManyToMany
     @JoinTable(
-            name = "user_skill",
+            name = "users_skills",
             joinColumns = @JoinColumn(
                     name = "user_id",referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(
                     name = "skill_id", referencedColumnName = "id"))
-    private Set<Skill> userSkills;
+    private Collection<Skill> userSkills;
 
-//    private Role role;
+    private Role role;
 
-//    private String description;
+    private String description;
 
     public User() {
     }

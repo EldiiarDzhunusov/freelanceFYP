@@ -1,5 +1,6 @@
 package com.uca.freelance.PresentationLayer.controllers;
 
+import com.uca.freelance.DataAccessLayer.entities.Skill;
 import com.uca.freelance.DataAccessLayer.entities.User;
 import com.uca.freelance.DataAccessLayer.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.security.Principal;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -56,7 +58,7 @@ public class AppController {
         User user = userRepository.findById(id).orElseThrow(()
                 -> new IllegalArgumentException("Invalid user Id: " +id));
         model.addAttribute("user",user);
-        return "update-user";
+        return "update_user";
     }
 
 
@@ -68,10 +70,6 @@ public class AppController {
             return "users";
         }
 
-//        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-//        String encodedPassword = passwordEncoder.encode(user.getPassword());
-//        user.setPassword(encodedPassword);
-        System.out.println(user.getPassword());
         userRepository.save(user);
 
         List<User> userList = userRepository.findAll();
@@ -80,9 +78,9 @@ public class AppController {
     }
 
     @GetMapping("users/delete/{id}")
-    public String deleteUser(@PathVariable(name = "id") Long id, Principal principal, Model model){
-        User user = userRepository.findByEmail(principal.getName());
-        if(user.getId()==id){
+    public String deleteUser(@PathVariable(name = "id") Long id, Model model){
+        Optional<User> user = userRepository.findById(id);
+        if(user.isPresent()){
             userRepository.deleteById(id);
             List<User> userList = userRepository.findAll();
             model.addAttribute("listUsers",userList);
@@ -94,7 +92,7 @@ public class AppController {
     }
 
     @GetMapping("users/profile/{id}")
-    public String profileInfo(@PathVariable(name = "id") Long id,Principal principal, Model model){
+    public String profileInfo(@PathVariable(name = "id") Long id, Model model){
 
         Optional<User> user = userRepository.findById(id);
 
@@ -109,7 +107,7 @@ public class AppController {
     }
 
     @GetMapping("users/edit/password/{id}")
-    public String showUpdatePasswordForm(@PathVariable(name = "id") Long id,Principal principal, Model model){
+    public String showUpdatePasswordForm(@PathVariable(name = "id") Long id,Model model){
         Optional<User> user = userRepository.findById(id);
 
         if(user.isPresent()){
@@ -126,7 +124,33 @@ public class AppController {
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
         userRepository.save(user);
+
+        List<User> userList = userRepository.findAll();
+        model.addAttribute("listUsers",userList);
         return "users";
+    }
+
+    @GetMapping("users/skills/{id}")
+    public String showUserSkills(@PathVariable(name = "id") Long id,Model model){
+        Optional<User> user = userRepository.findById(id);
+        if(user.isPresent()){
+            model.addAttribute("skills",user.get().getUserSkills());
+            model.addAttribute("user",user.get());
+            return "user_skills";
+        }
+        return "index";
+    }
+
+    @GetMapping("users/edit/skills/{id}")
+    public String showUpdateSkillsForm(@PathVariable(name = "id") Long id,Model model){
+        Optional<User> user = userRepository.findById(id);
+        if(user.isPresent()){
+//            model.addAttribute("newSkills", newSkills);
+            model.addAttribute("skills",user.get().getUserSkills());
+            model.addAttribute("user",user.get());
+            return "update_skills";
+        }
+        return "index";
     }
 
 }

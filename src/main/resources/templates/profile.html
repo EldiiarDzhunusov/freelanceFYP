@@ -9,9 +9,15 @@
     <div>
         <h1>[[${#request.userPrincipal.principal.fullName}]]</h1>
     </div>
+    <div>
+        <h2>  <a th:href="@{/users/edit/password/{id}(id=${user.id})}">Update password </a></h2>
+    </div>
 
     <td th:each="user : ${user}">
-        <p><a th:href="@{~/users/edit/profile/{id}(id = ${user.id})}">Edit</a></p>
+        <p>
+            <a th:href="@{~/users/edit/profile/{id}(id = ${user.id})}">Edit</a>
+            <a th:href="@{~/users/skills/{id}(id = ${user.id})}">Skills</a>
+        </p>
         <p th:text="${user.email}"></p>
         <p th:text="${user.firstName}"></p>
         <p th:text="${user.lastName}"></p>

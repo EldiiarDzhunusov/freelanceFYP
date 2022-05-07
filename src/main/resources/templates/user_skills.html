@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="ISO-8859-1">
+  <title>[[${#request.userPrincipal.principal.fullName}]] Skills</title>
+</head>
+<body>
+<div class="container text-center">
+  <div>
+    <h1>[[${#request.userPrincipal.principal.fullName}]] Skills</h1>
+<!--    <a th:href="@{~/users/edit/profile/{id}(id = ${user.id})}">Edit</a>-->
+  </div>
+  <div>
+    <h2>  <a th:href="@{/users/edit/skills/{id}(id=${user.id})}">Edit </a></h2>
+  </div>
+
+  <td th:each="skill : ${skills}">
+    <p th:text="${skill.getName()}"></p>
+  </td>
+
+</div>
+</body>
+</html>
