@@ -2,6 +2,7 @@ package com.uca.freelance.PresentationLayer.controllers;
 
 import com.uca.freelance.DataAccessLayer.entities.Skill;
 import com.uca.freelance.DataAccessLayer.entities.User;
+import com.uca.freelance.DataAccessLayer.repositories.SkillRepository;
 import com.uca.freelance.DataAccessLayer.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -12,8 +13,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import java.security.Principal;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -23,6 +25,9 @@ public class AppController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private SkillRepository skillRepository;
 
 
     @GetMapping("")
@@ -145,12 +150,27 @@ public class AppController {
     public String showUpdateSkillsForm(@PathVariable(name = "id") Long id,Model model){
         Optional<User> user = userRepository.findById(id);
         if(user.isPresent()){
-//            model.addAttribute("newSkills", newSkills);
-            model.addAttribute("skills",user.get().getUserSkills());
+            model.addAttribute("userSkills", user.get().getUserSkills());
+            model.addAttribute("skills",skillRepository.findAll());
             model.addAttribute("user",user.get());
             return "update_skills";
         }
         return "index";
     }
+    @PostMapping("users/update/skills/{id}")
+    public String updateUserSkills(@PathVariable(name = "id") Long id, @RequestParam("skills[]") Long[] skillId, Model model){
+        Optional<User> user = userRepository.findById(id);
+        if(user.isPresent()){
+            Collection<Skill> skills = new ArrayList<>();
+            for (int i = 0; i < skillId.length; i++) {
+                skills.add(skillRepository.findById(skillId[i]).get());
+            }
+            user.get().setUserSkills(skills);
+            userRepository.save(user.get());
+            return "redirect:/users/skills/"+id;
+        }
+        return "redirect:/users/skills/"+id;
+    }
+
 
 }
