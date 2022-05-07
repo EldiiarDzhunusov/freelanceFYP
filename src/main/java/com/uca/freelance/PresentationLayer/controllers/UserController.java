@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
-public class AppController {
+public class UserController {
 
     @Autowired
     private UserRepository userRepository;
@@ -103,7 +103,7 @@ public class AppController {
 
         if(user.isPresent()){
             model.addAttribute("user",user.get());
-            return "profile";
+            return "user_details";
         }else{
             return "index";
         }
