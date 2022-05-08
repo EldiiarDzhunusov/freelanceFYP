@@ -14,11 +14,14 @@ import java.util.Set;
 public class Skill {
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY)
-    public Long id;
-    public String name;
+    private Long id;
+    private String name;
 
     @ManyToMany(mappedBy = "userSkills")
     private Collection<User> userList;
+
+    @ManyToMany(mappedBy = "jobSkills")
+    private Collection<Job> jobList;
 
     public Skill() {
     }
