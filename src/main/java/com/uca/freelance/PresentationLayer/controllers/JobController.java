@@ -72,12 +72,22 @@ public class JobController {
     }
 
     @PostMapping("jobs/create")
-    public String createJob(@Validated Job job, @RequestParam("skills[]") Long[] skillId){
+    public String createJob(@Validated Job job, @RequestParam("skills[]") String[] skillId){
         job.setStarted(false);
         Collection<Skill> skills = new ArrayList<>();
+
         for (int i = 0; i < skillId.length; i++) {
-            skills.add(skillRepository.findById(skillId[i]).get());
+            try {
+                Long num = Long.parseLong(skillId[i]);
+                skills.add(skillRepository.findById(num).get());
+            } catch (NumberFormatException nfe) {
+                Skill skill = new Skill(skillId[i]);
+                skillRepository.save(skill);
+                skills.add(skill);
+            }
+
         }
+
         job.setJobSkills(skills);
         jobRepository.save(job);
         return "redirect:/jobs";
@@ -96,11 +106,19 @@ public class JobController {
     }
 
     @PostMapping("jobs/update/{id}")
-    public String updateJob(@PathVariable("id") Long id, @Validated Job job, @RequestParam("skills[]") Long[] skillId){
+    public String updateJob(@PathVariable("id") Long id, @Validated Job job, @RequestParam("skills[]") String[] skillId){
 
         Collection<Skill> skills = new ArrayList<>();
         for (int i = 0; i < skillId.length; i++) {
-            skills.add(skillRepository.findById(skillId[i]).get());
+            try {
+                Long num = Long.parseLong(skillId[i]);
+                skills.add(skillRepository.findById(num).get());
+            } catch (NumberFormatException nfe) {
+                Skill skill = new Skill(skillId[i]);
+                skillRepository.save(skill);
+                skills.add(skill);
+            }
+
         }
         job.setJobSkills(skills);
         jobRepository.save(job);

@@ -158,13 +158,22 @@ public class UserController {
         return "index";
     }
     @PostMapping("users/update/skills/{id}")
-    public String updateUserSkills(@PathVariable(name = "id") Long id, @RequestParam("skills[]") Long[] skillId, Model model){
+    public String updateUserSkills(@PathVariable(name = "id") Long id, @RequestParam("skills[]") String[] skillId, Model model){
+        Collection<Skill> skills = new ArrayList<>();
+
+        for (int i = 0; i < skillId.length; i++) {
+            try {
+                Long num = Long.parseLong(skillId[i]);
+                skills.add(skillRepository.findById(num).get());
+            } catch (NumberFormatException nfe) {
+                Skill skill = new Skill(skillId[i]);
+                skillRepository.save(skill);
+                skills.add(skill);
+            }
+
+        }
         Optional<User> user = userRepository.findById(id);
         if(user.isPresent()){
-            Collection<Skill> skills = new ArrayList<>();
-            for (int i = 0; i < skillId.length; i++) {
-                skills.add(skillRepository.findById(skillId[i]).get());
-            }
             user.get().setUserSkills(skills);
             userRepository.save(user.get());
             return "redirect:/users/skills/"+id;
