@@ -30,10 +30,6 @@ public class UserController {
     private SkillRepository skillRepository;
 
 
-    @GetMapping("")
-    public String ViewHomePage(){
-        return "index";
-    }
 
     @GetMapping("/register")
     public String showRegistrationForm(Model model){
@@ -50,9 +46,14 @@ public class UserController {
         return "register_success";
     }
 
-    @GetMapping("/users")
-    public String listUsers(Model model){
-        List<User> userList = userRepository.findAll();
+    @GetMapping(path = {"/users","/users/search"})
+    public String listUsers(Model model, String keyword){
+        List<User> userList;
+        if(keyword!=null){
+            userList = userRepository.findByKeyword(keyword);
+        }else{
+            userList = userRepository.findAll();
+        }
         model.addAttribute("listUsers",userList);
 
         return "users";

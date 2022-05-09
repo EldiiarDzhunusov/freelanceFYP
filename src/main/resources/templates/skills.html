@@ -17,6 +17,12 @@
     <h2>  <a th:href="@{/skills/new}">Create New Skill </a></h2>
   </div>
 
+  <form th:action="@{/skills/search}" method="get">
+    <input type="text" name="keyword" th:value="${keyword}"  placeholder="Find by name of the skill" size="50" >
+    <button type="submit" class="btn btn-info" >Search</button>
+    <button type="submit" class="btn btn-info" >Reset</button>
+  </form>
+
   <div>
     <table class="table table-striped table-bordered">
       <thead class="thead-dark">

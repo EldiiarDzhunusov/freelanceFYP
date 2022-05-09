@@ -19,9 +19,14 @@ public class SkillController {
     @Autowired
     private SkillRepository skillRepository;
 
-    @GetMapping("skills")
-    public String showSkills(Model model){
-        List<Skill> listSkills= skillRepository.findAll();
+    @GetMapping(path = {"skills","skills/search"})
+    public String showSkills(Model model, String keyword){
+        List<Skill> listSkills;
+        if(keyword!=null){
+            listSkills = skillRepository.findByKeyword(keyword);
+        }else{
+            listSkills= skillRepository.findAll();
+        }
         model.addAttribute("listSkills",listSkills);
         return "skills";
     }

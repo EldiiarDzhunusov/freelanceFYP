@@ -33,10 +33,16 @@ public class JobController {
     @Autowired
     UserRepository userRepository;
 
-    @GetMapping("jobs")
-    public String showAllJobs(Model model, Principal principal){
+    @GetMapping(path = {"jobs","jobs/search"})
+    public String showAllJobs(Model model, Principal principal, String keyword){
+        List<Job> jobs;
+        if(keyword!=null){
+            jobs = jobRepository.findByKeyword(keyword);
+        }else{
+            jobs = jobRepository.findAll();
+        }
 //        List<Job> jobs = jobRepository.findAllUnstartedJobs();
-        List<Job> jobs = jobRepository.findAll();
+
         Long userId = userRepository.findByEmail(principal.getName()).getId();
         model.addAttribute("jobs", jobs);
         model.addAttribute("userId", userId);

@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="ISO-8859-1">
-    <title>List Users</title>
+    <title>List Jobs</title>
     <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css" />
     <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
     <script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
@@ -18,6 +18,12 @@
     <div>
         <h2>  <a th:href="@{/jobs/new/{id}(id=${userId})}">Create New Job</a></h2>
     </div>
+
+    <form th:action="@{/jobs/search}" method="get">
+        <input type="text" name="keyword" th:value="${keyword}"  placeholder="Find by description or title" size="50" >
+        <button type="submit" class="btn btn-info" >Search</button>
+        <button type="submit" class="btn btn-info" >Reset</button>
+    </form>
 
 
     <div>

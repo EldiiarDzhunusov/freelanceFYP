@@ -21,6 +21,12 @@
     <h1>List of Users</h1>
   </div>
 
+  <form th:action="@{/users/search}" method="get">
+    <input type="text" name="keyword" th:value="${keyword}"  placeholder="Find by name or description" size="50" >
+    <button type="submit" class="btn btn-info" >Search</button>
+    <button type="submit" class="btn btn-info" >Reset</button>
+  </form>
+
   <div>
     <table class="table table-striped table-bordered">
       <thead class="thead-dark">
