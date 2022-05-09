@@ -33,7 +33,7 @@ public class JobController {
     @Autowired
     UserRepository userRepository;
 
-    @GetMapping(path = {"jobs","jobs/search"})
+    @GetMapping(path = {"/jobs","/jobs/search"})
     public String showAllJobs(Model model, Principal principal, String keyword){
         List<Job> jobs;
         if(keyword!=null){
@@ -49,7 +49,7 @@ public class JobController {
         return "job_list";
     }
 
-    @GetMapping("jobs/{id}")
+    @GetMapping("/jobs/{id}")
     public String jobDetails(@PathVariable("id") Long id, Model model){
         Optional<Job> job = jobRepository.findById(id);
         if(job.isPresent()){
@@ -62,13 +62,13 @@ public class JobController {
         return null;
     }
 
-    @GetMapping("jobs/delete/{id}")
+    @GetMapping("/jobs/delete/{id}")
     public String jobDelete(@PathVariable("id") Long id){
         jobRepository.deleteById(id);
         return "redirect:/jobs";
     }
 
-    @GetMapping("jobs/new/{id}")
+    @GetMapping("/jobs/new/{id}")
     public String showNewJobForm(@PathVariable Long id, Model model){
         Job job = new Job();
         job.setAuthorId(id);
@@ -77,7 +77,7 @@ public class JobController {
         return "job_create_form";
     }
 
-    @PostMapping("jobs/create")
+    @PostMapping("/jobs/create")
     public String createJob(@Validated Job job, @RequestParam("skills[]") String[] skillId){
         job.setStarted(false);
         Collection<Skill> skills = new ArrayList<>();
@@ -100,7 +100,7 @@ public class JobController {
     }
     //update
 
-    @GetMapping("jobs/edit/{id}")
+    @GetMapping("/jobs/edit/{id}")
     public String editJob(@PathVariable("id") Long id, Model model){
         Optional<Job> job = jobRepository.findById(id);
         if(job.isPresent()) {
@@ -111,7 +111,7 @@ public class JobController {
         return "job_edit";
     }
 
-    @PostMapping("jobs/update/{id}")
+    @PostMapping("/jobs/update/{id}")
     public String updateJob(@PathVariable("id") Long id, @Validated Job job, @RequestParam("skills[]") String[] skillId){
 
         Collection<Skill> skills = new ArrayList<>();

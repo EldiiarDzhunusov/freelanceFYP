@@ -68,7 +68,7 @@ public class UserController {
     }
 
 
-    @PostMapping("users/update/profile/{id}")
+    @PostMapping("/users/update/profile/{id}")
     public String updateUser(@PathVariable("id") Long id, @Validated User user,
                              BindingResult result, Model model){
         if(result.hasErrors()){
@@ -83,7 +83,7 @@ public class UserController {
         return "users";
     }
 
-    @GetMapping("users/delete/{id}")
+    @GetMapping("/users/delete/{id}")
     public String deleteUser(@PathVariable(name = "id") Long id, Model model){
         Optional<User> user = userRepository.findById(id);
         if(user.isPresent()){
@@ -97,7 +97,7 @@ public class UserController {
 
     }
 
-    @GetMapping("users/profile/{id}")
+    @GetMapping("/users/profile/{id}")
     public String profileInfo(@PathVariable(name = "id") Long id, Model model){
 
         Optional<User> user = userRepository.findById(id);
@@ -112,7 +112,7 @@ public class UserController {
 
     }
 
-    @GetMapping("users/edit/password/{id}")
+    @GetMapping("/users/edit/password/{id}")
     public String showUpdatePasswordForm(@PathVariable(name = "id") Long id,Model model){
         Optional<User> user = userRepository.findById(id);
 
@@ -124,7 +124,7 @@ public class UserController {
 
     }
 
-    @PostMapping("users/update/password/{id}")
+    @PostMapping("/users/update/password/{id}")
     public String updatePassword(@PathVariable(name = "id") Long id, @Validated User user, BindingResult result, Model model){
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(user.getPassword());
@@ -136,7 +136,7 @@ public class UserController {
         return "users";
     }
 
-    @GetMapping("users/skills/{id}")
+    @GetMapping("/users/skills/{id}")
     public String showUserSkills(@PathVariable(name = "id") Long id,Model model){
         Optional<User> user = userRepository.findById(id);
         if(user.isPresent()){
@@ -147,7 +147,7 @@ public class UserController {
         return "index";
     }
 
-    @GetMapping("users/edit/skills/{id}")
+    @GetMapping("/users/edit/skills/{id}")
     public String showUpdateSkillsForm(@PathVariable(name = "id") Long id,Model model){
         Optional<User> user = userRepository.findById(id);
         if(user.isPresent()){
@@ -158,7 +158,7 @@ public class UserController {
         }
         return "index";
     }
-    @PostMapping("users/update/skills/{id}")
+    @PostMapping("/users/update/skills/{id}")
     public String updateUserSkills(@PathVariable(name = "id") Long id, @RequestParam("skills[]") String[] skillId, Model model){
         Collection<Skill> skills = new ArrayList<>();
 

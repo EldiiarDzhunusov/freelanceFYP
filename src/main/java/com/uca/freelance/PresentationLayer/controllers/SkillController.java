@@ -19,7 +19,7 @@ public class SkillController {
     @Autowired
     private SkillRepository skillRepository;
 
-    @GetMapping(path = {"skills","skills/search"})
+    @GetMapping(path = {"/skills","/skills/search"})
     public String showSkills(Model model, String keyword){
         List<Skill> listSkills;
         if(keyword!=null){
@@ -31,39 +31,39 @@ public class SkillController {
         return "skills";
     }
 
-    @GetMapping("skills/{id}")
+    @GetMapping("/skills/{id}")
     public String skillDetails(@PathVariable("id") Long id, Model model){
         Skill skill = skillRepository.getById(id);
         model.addAttribute("skill",skill);
         return "skill_details";
     }
 
-    @GetMapping("skills/edit/{id}")
+    @GetMapping("/skills/edit/{id}")
     public String skillsEdit(@PathVariable("id") Long id, Model model){
         Skill skill = skillRepository.getById(id);
         model.addAttribute("skill",skill);
         return "skill_update";
     }
 
-    @PostMapping("skills/update/{id}")
+    @PostMapping("/skills/update/{id}")
     public String skillsUpdate(@PathVariable("id") Long id, @Validated Skill skill){
         skillRepository.save(skill);
         return "redirect:/skills";
     }
 
-    @GetMapping("skills/new")
+    @GetMapping("/skills/new")
     public String showNewSkillForm(Model model){
         model.addAttribute("skill", new Skill());
         return "skill_create_form";
     }
 
-    @PostMapping("skills/create")
+    @PostMapping("/skills/create")
     public String proceedNewSkill(@Validated Skill skill){
         skillRepository.save(skill);
         return "redirect:/skills";
     }
 
-    @GetMapping("skills/delete/{id}")
+    @GetMapping("/skills/delete/{id}")
     public String deleteSkill(@PathVariable("id") Long id){
         skillRepository.delete(skillRepository.getById(id));
         return "redirect:/skills";
