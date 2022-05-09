@@ -50,11 +50,12 @@ public class User {
         this.lastName = lastName;
     }
 
-    //    public User(String email, String password, String firstName, String lastName, Role role) {
-//        this.email = email;
-//        this.password = password;
-//        this.firstName = firstName;
-//        this.lastName = lastName;
-//        this.role = role;
-//    }
+    public User(String email, String password, String firstName, String lastName, Role role, String description) {
+        this.email = email;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.role = role;
+        this.description = description;
+    }
 }

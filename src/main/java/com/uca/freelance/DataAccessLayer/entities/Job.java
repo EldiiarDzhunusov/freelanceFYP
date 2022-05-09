@@ -27,6 +27,8 @@ public class Job {
 
     private Long authorId;
 
+    private Long freelancerId;
+
     @ManyToMany
     @JoinTable(
             name = "job_skills",
