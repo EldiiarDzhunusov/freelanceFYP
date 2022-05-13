@@ -48,14 +48,15 @@
                 <nav class="mx-auto site-navigation">
                     <ul class="site-menu js-clone-nav d-none d-xl-block ml-0 pl-0">
                         <li><a href="/" >Найти фрилансеров</a></li>
-                        <li><a href="about">Найти работу</a></li>
-                        <li><a href="contact">Найти по навыкам</a></li>
+                        <li><a href="projects">Найти работу</a></li>
+                        <li><a href="skills2">Найти по навыкам</a></li>
                         <li class="d-lg-none"><a href="login">Войти</a></li>
                     </ul>
                 </nav>
 
                 <div class="right-cta-menu text-right d-flex align-items-center col-6">
                     <div class="ml-auto">
+<!--                        <div th:if="sec:authorize="!isAuthenticated()""></div>-->
                         <li sec:authorize="!isAuthenticated()"><a href="login" class="btn btn-primary border-width-2 d-none d-lg-inline-block"><span class="mr-2 icon-lock_outline"></span>Войти</a></li>
                         <li sec:authorize="isAuthenticated()"><a th:href="@{/logout}"class="btn btn-primary border-width-2 d-none d-lg-inline-block"><span class="mr-2 icon-lock_outline"></span>Выйти</a></li>
                     </div>
@@ -66,6 +67,60 @@
         </div>
     </header>
 
+</div>
+
+<div th:fragment="footer">
+    <footer class="site-footer">
+
+        <a href="#next" class="smoothscroll scroll-top">
+            <span class="icon-keyboard_arrow_up"></span>
+        </a>
+
+        <div class="container">
+            <div class="row mb-2">
+                <div class="col-6 col-md-3 mb-4 mb-md-0">
+                    <h3>О платформе</h3>
+                    <ul class="list-unstyled">
+                        <li><a href="#">Возможности</a></li>
+
+                    </ul>
+                </div>
+                <div class="col-6 col-md-3 mb-4 mb-md-0">
+                    <h3>Разработчики</h3>
+                    <ul class="list-unstyled">
+                        <li><a href="#">О нас</a></li>
+                        <li><a href="#">Блог</a></li>
+
+                    </ul>
+                </div>
+                <div class="col-6 col-md-3 mb-4 mb-md-0">
+                    <h3>Поддержка</h3>
+                    <ul class="list-unstyled">
+                        <li><a href="#">Помощь</a></li>
+                        <li><a href="#">Правила</a></li>
+                    </ul>
+                </div>
+                <div class="col-6 col-md-3 mb-4 mb-md-0">
+                    <h3>Связаться с нами</h3>
+                    <div class="footer-social">
+                        <a href="#"><span class="icon-facebook"></span></a>
+                        <a href="#"><span class="icon-twitter"></span></a>
+                        <a href="#"><span class="icon-instagram"></span></a>
+                        <a href="#"><span class="icon-linkedin"></span></a>
+                    </div>
+                </div>
+            </div>
+
+<!--            <div class="row text-center">-->
+<!--                <div class="col-12">-->
+<!--                    <p class="copyright"><small>-->
+<!--                        &lt;!&ndash; Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. &ndash;&gt;-->
+<!--                        Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="icon-heart text-danger" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank" >Colorlib</a>-->
+<!--                        &lt;!&ndash; Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. &ndash;&gt;</small></p>-->
+<!--                </div>-->
+<!--            </div>-->
+        </div>
+    </footer>
 </div>
 
 
@@ -87,9 +142,5 @@
 </div>
 
 
-
-<script src="js/bootstrap-select.min.js"></script>
-
-<script src="js/custom.js"></script>
 </body>
 </html>

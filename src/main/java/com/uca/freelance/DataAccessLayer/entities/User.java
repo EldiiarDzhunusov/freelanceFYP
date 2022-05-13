@@ -4,6 +4,7 @@ import com.uca.freelance.DataAccessLayer.models.Role;
 import lombok.Getter;
 import lombok.Setter;
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Set;
 
@@ -36,11 +37,39 @@ public class User {
                     name = "skill_id", referencedColumnName = "id"))
     private Collection<Skill> userSkills;
 
+    @ManyToMany
+    @JoinTable(
+            name = "users_jobs",
+            joinColumns = @JoinColumn(
+                    name = "user_id",referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(
+                    name = "job_id", referencedColumnName = "id"))
+    private Collection<Job> userJobs;
+
     private Role role;
 
     private String description;
 
     public User() {
+    }
+
+    public String getSkillsToString(){
+        Collection<Skill> userSkills = this.userSkills;
+        String ans = "";
+        boolean isFirst = true;
+        for(Skill skill : userSkills){
+            if(isFirst){
+                ans+=skill.getName();
+                isFirst =false;
+            }else{
+                ans+=", "+skill.getName();
+            }
+        }
+        return ans;
+    }
+
+    public String getFullNameAbbreviation() {
+        return Character.toUpperCase(this.lastName.charAt(0))+". "+ this.firstName ;
     }
 
     public User(String email, String password, String firstName, String lastName) {

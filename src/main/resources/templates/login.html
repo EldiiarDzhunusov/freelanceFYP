@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Freelance Platform</title>
+    <div th:insert="template.html::imports"></div>
+</head>
+<body>
+
+    <section class="site-section ">
+        <div class="container">
+            <div class="col-lg-6">
+                <h2 class="mb-4">Log In To Freelance Platform</h2>
+                <form th:action="@{/login}" method="post" class="p-4 border rounded">
+
+                    <!--                    error message-->
+                    <div th:if="${param.error}">
+                        <div class="alert alert-danger">Invalid username or
+                            password.</div>
+                    </div>
+
+                    <!-- logout message -->
+                    <div th:if="${param.logout}">
+                        <div class="alert alert-info">You have been logged out.</div>
+                    </div>
+                    <!--                    -->
+                    <div class="row form-group">
+                        <div class="col-md-12 mb-3 mb-md-0">
+                            <label class="text-black" for ="username"> Email </label> :
+                            <input type="text" class = "form-control" id ="username" name = "username"
+                                   placeholder="Enter Email" autofocus="autofocus">
+                        </div>
+                    </div>
+
+                    <div class="row form-group">
+                        <div class="col-md-12 mb-3 mb-md-0">
+                            <label class="text-black" for="password">Password</label>:
+                            <input type="password" id="password" name="password" class="form-control"
+                                       placeholder="Enter Password" />
+                        </div>
+                    </div>
+
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                            <input type="submit"  name="login-submit" id ="login-submit" value="Log In" class="btn px-4 btn-primary text-white">
+                        </div>
+                    </div>
+                </form>
+
+
+                <div class="form-group">
+                      <span>New user? <a href="/" th:href="@{/register}">Register
+                        here</a></span>
+                </div>
+
+            </div>
+        </div>
+    </section>
+</body>
+</html>

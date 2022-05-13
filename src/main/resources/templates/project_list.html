@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Freelance Platform</title>
+    <div th:insert="template.html::imports"></div>
+</head>
+<body>
+<div id="overlayer"></div>
+<div class="loader">
+    <div class="spinner-border text-primary" role="status">
+        <span class="sr-only">Loading...</span>
+    </div>
+</div>
+<div th:insert="template.html::header"></div>
+
+<!--    search bar and background image-->
+<section class="home-section section-hero overlay bg-image" style="background-image: url('/images/search_job.jpg');" id="home-section">
+
+    <div class="container" id="id">
+        <div class="row align-items-center justify-content-center">
+            <div class="col-md-40">
+                <div class="mb-5 text-center">
+                    <h1 class="text-white font-weight-bold">&nbsp;&nbsp;&nbsp;Найдите работу своей мечты!&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h1>
+                    <p>Эта платформа позволит вам найти работу под ваши умения!</p>
+                </div>
+                <form th:action="@{/projects}" method="get" class="search-jobs-form">
+
+                    <div class="row mb-5">
+                        <div class="col-12 col-sm-6 col-md-6 col-lg-9 mb-4 mb-lg-0">
+                            <input type="text" name="keyword" th:value="${keyword}"  class="form-control form-control-lg" placeholder="Название, Описание...">
+                        </div>
+
+
+                        <div class="col-12 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
+                            <button type="submit" class="btn btn-primary btn-lg btn-block text-white btn-search"><span class="icon-search icon mr-2"></span>Найти Работу</button>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <a href="#next" class="scroll-button smoothscroll">
+        <span class=" icon-keyboard_arrow_down"></span>
+    </a>
+
+</section>
+
+
+<section class="site-section" id="next">
+    <div class="container">
+
+        <div class="row mb-5 justify-content-center">
+            <div class="col-md-7 text-center">
+                <h2 class="section-title mb-2" > <div  th:text=" ${textForSearch} + ${listJobs.size()} " ></div></h2>
+            </div>
+        </div>
+
+        <ul class="job-listings mb-2" th:each="job: ${listJobs}">
+            <li class="job-listing d-block d-sm-flex pb-3 pb-sm-0 align-items-center" >
+                <a th:href="@{/jobs/{id}(id=${job.id})}"></a>
+                <div class="job-listing-logo">
+
+                </div>
+                <div class="job-listing-about d-sm-flex custom-width w-100 justify-content-between mx-4">
+                    <div class="job-listing-position custom-width w-50 mb-3 mb-sm-0" >
+                        <div style="margin: 10px">
+                            <h2 th:text="${job.getName()}"></h2>
+                            <br>
+                            <h5 th:text="${job.getDescription()}"></h5>
+                        </div>
+
+                    </div>
+                    <div class="job-listing-location mb-3 mb-sm-0 custom-width w-25">
+                        <div style="margin: 10px">
+                            <span class="" th:text="${job.getSkillsToString()}"></span>
+                        </div>
+                    </div>
+                    <div class="job-listing-meta">
+                        <span class="badge badge-success">Подробнее</span>
+                    </div>
+                </div>
+
+            </li>
+
+
+        </ul>
+
+    </div>
+</section>
+
+
+<div th:insert="template.html::footer"></div>
+<div th:insert="template.html::scripts"></div>
+</body>
+</html>
