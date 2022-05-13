@@ -6,8 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class Freelancers {
@@ -31,5 +33,18 @@ public class Freelancers {
         model.addAttribute("listUsers",userList);
 
         return "freelancers_list";
+    }
+
+    @GetMapping("/{id}")
+    public String profileInfo(@PathVariable(name = "id") Long id, Model model){
+
+        Optional<User> user = userRepository.findById(id);
+
+        if(user.isPresent()){
+            model.addAttribute("user",user.get());
+            return "freelancers_details";
+        }else{
+            return "main_page";
+        }
     }
 }
