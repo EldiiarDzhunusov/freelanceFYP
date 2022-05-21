@@ -41,6 +41,13 @@ public class Job {
                     name = "skill_id", referencedColumnName = "id"))
     private Collection<Skill> jobSkills;
 
+    @ManyToMany(mappedBy = "freelancerList")
+    private Collection<Application> frencerApplicationList;
+
+    @ManyToMany(mappedBy = "employerList")
+    private Collection<Application> employerApplicationList;
+
+
 
     public String getSkillsToString(){
         Collection<Skill> jobSkills = this.jobSkills;
