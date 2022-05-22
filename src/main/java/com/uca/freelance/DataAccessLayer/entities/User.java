@@ -46,6 +46,9 @@ public class User {
                     name = "job_id", referencedColumnName = "id"))
     private Collection<Job> userJobs;
 
+    @OneToMany(mappedBy="user")
+    private Collection<Application> applicationsList;
+
     private Role role;
 
     private String description;

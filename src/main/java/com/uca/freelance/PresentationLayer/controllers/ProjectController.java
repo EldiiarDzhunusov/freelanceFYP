@@ -1,22 +1,34 @@
 package com.uca.freelance.PresentationLayer.controllers;
 
+import com.uca.freelance.DataAccessLayer.entities.Application;
 import com.uca.freelance.DataAccessLayer.entities.Job;
 import com.uca.freelance.DataAccessLayer.entities.User;
+import com.uca.freelance.DataAccessLayer.repositories.ApplicationRepository;
 import com.uca.freelance.DataAccessLayer.repositories.JobRepository;
 import com.uca.freelance.DataAccessLayer.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
+import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class ProjectController {
 
     @Autowired
     private JobRepository jobRepository;
+
+    @Autowired
+    private ApplicationRepository applicationRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
 
     @GetMapping(path = "/projects")
@@ -36,10 +48,7 @@ public class ProjectController {
         return "project_list";
     }
 
-    @GetMapping(path = "/projects/apply/{id}")
-    public String applyForProject(@PathVariable("id") Long id){
-        return "prod/project_application";
-    }
+
 
 
 }

@@ -1,12 +1,15 @@
 package com.uca.freelance.DataAccessLayer.entities;
 
+import com.uca.freelance.DataAccessLayer.models.ApplicationStatus;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Collection;
 
+
 @Entity
+@Table(name = "applications")
 @Getter
 @Setter
 public class Application {
@@ -14,30 +17,28 @@ public class Application {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String title;
-
     private String description;
 
-    @Column(name = "author_id")
-    private Long authorId;
 
-    @ManyToMany
-    @JoinTable(
-            name = "application_employer",
-            joinColumns = @JoinColumn(
-                    name = "application_id",referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(
-                    name = "employer_id", referencedColumnName = "id"))
-    private Collection<User> employerList;
+    @Column(name = "proposed_price")
+    private double proposedPrice;
 
-    @ManyToMany
-    @JoinTable(
-            name = "application_freelancer",
-            joinColumns = @JoinColumn(
-                    name = "application_id",referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(
-                    name = "freelancer_id", referencedColumnName = "id"))
-    private Collection<User> freelancerList;
+    @Column(name = "application_status")
+    private ApplicationStatus applicationStatus;
+
+    @Column(name = "job_take_id")
+    private Long jobTakeId;
+
+
+    @ManyToOne
+    @JoinColumn(name="job_id", nullable=false)
+    private Job job;
+
+    @ManyToOne
+    @JoinColumn(name="user_id", nullable=false)
+    private User user;
+
+
 
 
 

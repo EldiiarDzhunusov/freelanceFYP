@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Application Form</title>
+    <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css" />
+    <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container text-center">
+    <div>
+        <h1>Application Form</h1>
+    </div>
+    <form th:action="@{/application/create}" th:object="${application1}"
+          method="post" style="max-width: 600px; margin: 0 auto;">
+        <div class="m-3">
+
+            <input type="hidden" th:field="*{jobTakeId}" value="th:text='${application1.jobTakeId}'"  class="form-control"  />
+
+            <div class="form-group row">
+                <label class="col-4 col-form-label"> Proposal </label>
+                <div class="col-8">
+                    <input type="text" th:field="*{description}" class="form-control" required />
+                </div>
+            </div>
+
+
+
+            <div class="form-group row">
+                <label class="col-4 col-form-label">Proposed Price $: </label>
+                <div class="col-8">
+                    <input type="number" step="0.1" th:field="*{proposedPrice}" class="form-control"
+                           required minlength="2" maxlength="64"/>
+                </div>
+            </div>
+
+
+            <div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>
