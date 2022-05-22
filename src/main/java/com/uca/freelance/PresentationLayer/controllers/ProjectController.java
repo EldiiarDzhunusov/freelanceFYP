@@ -1,5 +1,6 @@
 package com.uca.freelance.PresentationLayer.controllers;
 
+import com.uca.freelance.BussinessLogicLayer.serviceImplementations.JobService;
 import com.uca.freelance.DataAccessLayer.entities.Application;
 import com.uca.freelance.DataAccessLayer.entities.Job;
 import com.uca.freelance.DataAccessLayer.entities.User;
@@ -22,13 +23,7 @@ import java.util.Optional;
 public class ProjectController {
 
     @Autowired
-    private JobRepository jobRepository;
-
-    @Autowired
-    private ApplicationRepository applicationRepository;
-
-    @Autowired
-    private UserRepository userRepository;
+    private JobService jobService;
 
 
     @GetMapping(path = "/projects")
@@ -37,10 +32,10 @@ public class ProjectController {
         String textForSearch = "";
         if(keyword!=null && !keyword.equals("")){
             textForSearch = "Работ по запросу " + keyword + " найдено: ";
-            jobList = jobRepository.findByKeyword(keyword);
+            jobList = jobService.findByKeyword(keyword);
         }else{
             textForSearch = "Всего работ : ";
-            jobList = jobRepository.findAll();
+            jobList = jobService.findAll();
         }
         model.addAttribute("textForSearch",textForSearch);
         model.addAttribute("listJobs",jobList);

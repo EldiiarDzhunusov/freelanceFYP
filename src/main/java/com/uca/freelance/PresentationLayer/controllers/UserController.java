@@ -1,5 +1,7 @@
 package com.uca.freelance.PresentationLayer.controllers;
 
+import com.uca.freelance.BussinessLogicLayer.serviceImplementations.SkillService;
+import com.uca.freelance.BussinessLogicLayer.serviceImplementations.UserService;
 import com.uca.freelance.DataAccessLayer.entities.Job;
 import com.uca.freelance.DataAccessLayer.entities.Skill;
 import com.uca.freelance.DataAccessLayer.entities.User;
@@ -25,20 +27,17 @@ import java.util.Optional;
 public class UserController {
 
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
 
     @Autowired
-    private SkillRepository skillRepository;
-
-
-
+    private SkillService skillService;
 
     @PostMapping("/process_register")
     public String processRegister(User user){
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
-        userRepository.save(user);
+        userService.save(user);
         return "user/register_success";
     }
 
@@ -46,9 +45,9 @@ public class UserController {
     public String listUsers(Model model, String keyword){
         List<User> userList;
         if(keyword!=null){
-            userList = userRepository.findByKeyword(keyword);
+            userList = userService.findByKeyword(keyword);
         }else{
-            userList = userRepository.findAll();
+            userList = userService.findAll();
         }
         model.addAttribute("listUsers",userList);
 
@@ -57,7 +56,7 @@ public class UserController {
 
     @GetMapping("/users/edit/profile/{id}")
     public String showUpdateForm(@PathVariable("id") Long id, Model model){
-        User user = userRepository.findById(id).orElseThrow(()
+        User user = userService.findById(id).orElseThrow(()
                 -> new IllegalArgumentException("Invalid user Id: " +id));
         model.addAttribute("user",user);
         return "user/edit";
@@ -72,18 +71,18 @@ public class UserController {
             return "user/list";
         }
 
-        userRepository.save(user);
+        userService.save(user);
 
-        List<User> userList = userRepository.findAll();
+        List<User> userList = userService.findAll();
         model.addAttribute("listUsers",userList);
         return "user/list";
     }
 
     @GetMapping("/users/delete/{id}")
     public String deleteUser(@PathVariable(name = "id") Long id, Model model){
-        Optional<User> user = userRepository.findById(id);
+        Optional<User> user = userService.findById(id);
         if(user.isPresent()){
-            userRepository.deleteById(id);
+            userService.deleteById(id);
 
             return "redirect:/users";
         }else{
@@ -95,7 +94,7 @@ public class UserController {
     @GetMapping("/users/profile/{id}")
     public String profileInfo(@PathVariable(name = "id") Long id, Model model){
 
-        Optional<User> user = userRepository.findById(id);
+        Optional<User> user = userService.findById(id);
 
         if(user.isPresent()){
             model.addAttribute("user",user.get());
@@ -110,7 +109,7 @@ public class UserController {
 
     @GetMapping("/users/edit/password/{id}")
     public String showUpdatePasswordForm(@PathVariable(name = "id") Long id,Model model){
-        Optional<User> user = userRepository.findById(id);
+        Optional<User> user = userService.findById(id);
 
         if(user.isPresent()){
             model.addAttribute("user",user.get());
@@ -125,16 +124,16 @@ public class UserController {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
-        userRepository.save(user);
+        userService.save(user);
 
-        List<User> userList = userRepository.findAll();
+        List<User> userList = userService.findAll();
         model.addAttribute("listUsers",userList);
         return "user/list";
     }
 
     @GetMapping("/users/skills/{id}")
     public String showUserSkills(@PathVariable(name = "id") Long id,Model model){
-        Optional<User> user = userRepository.findById(id);
+        Optional<User> user = userService.findById(id);
         if(user.isPresent()){
             model.addAttribute("skills",user.get().getUserSkills());
             model.addAttribute("user",user.get());
@@ -145,10 +144,10 @@ public class UserController {
 
     @GetMapping("/users/edit/skills/{id}")
     public String showUpdateSkillsForm(@PathVariable(name = "id") Long id,Model model){
-        Optional<User> user = userRepository.findById(id);
+        Optional<User> user = userService.findById(id);
         if(user.isPresent()){
             model.addAttribute("userSkills", user.get().getUserSkills());
-            model.addAttribute("skills",skillRepository.findAll());
+            model.addAttribute("skills",skillService.findAll());
             model.addAttribute("user",user.get());
             return "user/update_skills";
         }
@@ -161,18 +160,18 @@ public class UserController {
         for (int i = 0; i < skillId.length; i++) {
             try {
                 Long num = Long.parseLong(skillId[i]);
-                skills.add(skillRepository.findById(num).get());
+                skills.add(skillService.findById(num).get());
             } catch (NumberFormatException nfe) {
                 Skill skill = new Skill(skillId[i]);
-                skillRepository.save(skill);
+                skillService.save(skill);
                 skills.add(skill);
             }
 
         }
-        Optional<User> user = userRepository.findById(id);
+        Optional<User> user = userService.findById(id);
         if(user.isPresent()){
             user.get().setUserSkills(skills);
-            userRepository.save(user.get());
+            userService.save(user.get());
             return "redirect:/users/skills/"+id;
         }
         return "redirect:/users/skills/"+id;

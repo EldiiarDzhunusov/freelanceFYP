@@ -1,5 +1,8 @@
 package com.uca.freelance.PresentationLayer.controllers;
 
+import com.uca.freelance.BussinessLogicLayer.serviceImplementations.JobService;
+import com.uca.freelance.BussinessLogicLayer.serviceImplementations.SkillService;
+import com.uca.freelance.BussinessLogicLayer.serviceImplementations.UserService;
 import com.uca.freelance.DataAccessLayer.entities.Job;
 import com.uca.freelance.DataAccessLayer.entities.Skill;
 import com.uca.freelance.DataAccessLayer.entities.User;
@@ -25,25 +28,25 @@ import java.util.Optional;
 public class JobController {
 
     @Autowired
-    JobRepository jobRepository;
+    private JobService jobService;
 
     @Autowired
-    SkillRepository skillRepository;
+    private SkillService skillService;
 
     @Autowired
-    UserRepository userRepository;
+    private UserService userService;
 
     @GetMapping(path = {"/jobs","/jobs/search"})
     public String showAllJobs(Model model, Principal principal, String keyword){
         List<Job> jobs;
         if(keyword!=null){
-            jobs = jobRepository.findByKeyword(keyword);
+            jobs = jobService.findByKeyword(keyword);
         }else{
-            jobs = jobRepository.findAll();
+            jobs = jobService.findAll();
         }
 //        List<Job> jobs = jobRepository.findAllUnstartedJobs();
 
-        Long userId = userRepository.findByEmail(principal.getName()).getId();
+        Long userId = userService.findByEmail(principal.getName()).getId();
         model.addAttribute("jobs", jobs);
         model.addAttribute("userId", userId);
         return "job/list";
@@ -51,9 +54,10 @@ public class JobController {
 
     @GetMapping("/jobs/{id}")
     public String jobDetails(@PathVariable("id") Long id, Model model){
-        Optional<Job> job = jobRepository.findById(id);
+        Optional<Job> job = jobService.findById(id);
         if(job.isPresent()){
-            Optional<User> user = userRepository.findById(job.get().getAuthorId());
+            System.out.println(job.get().getAuthorId());
+            Optional<User> user = userService.findById(job.get().getAuthorId());
             model.addAttribute("user",user.get());
             model.addAttribute("job",job.get());
             return "job/details";
@@ -64,7 +68,7 @@ public class JobController {
 
     @GetMapping("/jobs/delete/{id}")
     public String jobDelete(@PathVariable("id") Long id){
-        jobRepository.deleteById(id);
+        jobService.deleteById(id);
         return "redirect:/jobs";
     }
 
@@ -73,7 +77,7 @@ public class JobController {
         Job job = new Job();
         job.setAuthorId(id);
         model.addAttribute("job",job);
-        model.addAttribute("skills",skillRepository.findAll());
+        model.addAttribute("skills",skillService.findAll());
         return "job/create_form";
     }
 
@@ -85,26 +89,26 @@ public class JobController {
         for (int i = 0; i < skillId.length; i++) {
             try {
                 Long num = Long.parseLong(skillId[i]);
-                skills.add(skillRepository.findById(num).get());
+                skills.add(skillService.findById(num).get());
             } catch (NumberFormatException nfe) {
                 Skill skill = new Skill(skillId[i]);
-                skillRepository.save(skill);
+                skillService.save(skill);
                 skills.add(skill);
             }
 
         }
 
         job.setJobSkills(skills);
-        jobRepository.save(job);
+        jobService.save(job);
         return "redirect:/jobs";
     }
     //update
 
     @GetMapping("/jobs/edit/{id}")
     public String editJob(@PathVariable("id") Long id, Model model){
-        Optional<Job> job = jobRepository.findById(id);
+        Optional<Job> job = jobService.findById(id);
         if(job.isPresent()) {
-            List<Skill> skills = skillRepository.findAll();
+            List<Skill> skills = skillService.findAll();
             model.addAttribute("job",job.get());
             model.addAttribute("skills",skills);
         }
@@ -118,16 +122,16 @@ public class JobController {
         for (int i = 0; i < skillId.length; i++) {
             try {
                 Long num = Long.parseLong(skillId[i]);
-                skills.add(skillRepository.findById(num).get());
+                skills.add(skillService.findById(num).get());
             } catch (NumberFormatException nfe) {
                 Skill skill = new Skill(skillId[i]);
-                skillRepository.save(skill);
+                skillService.save(skill);
                 skills.add(skill);
             }
 
         }
         job.setJobSkills(skills);
-        jobRepository.save(job);
+        jobService.save(job);
 
         return "redirect:/jobs/"+id;
     }

@@ -1,5 +1,8 @@
 package com.uca.freelance.PresentationLayer.controllers;
 
+import com.uca.freelance.BussinessLogicLayer.serviceImplementations.ApplicationService;
+import com.uca.freelance.BussinessLogicLayer.serviceImplementations.JobService;
+import com.uca.freelance.BussinessLogicLayer.serviceImplementations.UserService;
 import com.uca.freelance.DataAccessLayer.entities.Application;
 import com.uca.freelance.DataAccessLayer.entities.Job;
 import com.uca.freelance.DataAccessLayer.entities.User;
@@ -22,14 +25,15 @@ import java.util.Optional;
 @Controller
 public class ApplicationController {
 
-    @Autowired
-    private JobRepository jobRepository;
 
     @Autowired
-    private ApplicationRepository applicationRepository;
+    private JobService jobService;
 
     @Autowired
-    private UserRepository userRepository;
+    private ApplicationService applicationService;
+
+    @Autowired
+    private UserService userService;
 
 
 
@@ -44,19 +48,19 @@ public class ApplicationController {
 
     @PostMapping(path = "/application/create")
     public String createProject(@Validated Application application, Principal principal){
-        User user = userRepository.findByEmail(principal.getName());
+        User user = userService.findByEmail(principal.getName());
         application.setUser(user);
-        Optional<Job> job = jobRepository.findById(application.getJobTakeId());
+        Optional<Job> job = jobService.findById(application.getJobTakeId());
         application.setJob(job.get());
         application.setApplicationStatus(ApplicationStatus.PENDING);
-        applicationRepository.save(application);
+        applicationService.save(application);
         return "redirect:/applications";
 
     }
 
     @GetMapping(path = "/applications")
     public String listOfAllApplications(Model model){
-        List<Application> applicationList = applicationRepository.findAll();
+        List<Application> applicationList = applicationService.findAll();
         model.addAttribute("applicationList", applicationList);
         return "application/list";
     }

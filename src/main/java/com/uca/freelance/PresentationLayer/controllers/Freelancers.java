@@ -1,5 +1,6 @@
 package com.uca.freelance.PresentationLayer.controllers;
 
+import com.uca.freelance.BussinessLogicLayer.serviceImplementations.UserService;
 import com.uca.freelance.DataAccessLayer.entities.User;
 import com.uca.freelance.DataAccessLayer.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,7 @@ import java.util.Optional;
 public class Freelancers {
 
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
 
 
     @GetMapping(path = "/freelancers")
@@ -24,10 +25,10 @@ public class Freelancers {
         String textForSearch = "";
         if(keyword!=null && !keyword.equals("")){
             textForSearch = "Фрилансеров по запросу " + keyword + " найдено: ";
-            userList = userRepository.findByKeyword(keyword);
+            userList = userService.findByKeyword(keyword);
         }else{
             textForSearch = "Фрилансеров в портале: ";
-            userList = userRepository.findAll();
+            userList = userService.findAll();
         }
         model.addAttribute("textForSearch",textForSearch);
         model.addAttribute("listUsers",userList);
@@ -38,7 +39,7 @@ public class Freelancers {
     @GetMapping("/{id}")
     public String profileInfo(@PathVariable(name = "id") Long id, Model model){
 
-        Optional<User> user = userRepository.findById(id);
+        Optional<User> user = userService.findById(id);
 
         if(user.isPresent()){
             model.addAttribute("user",user.get());
