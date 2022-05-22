@@ -25,10 +25,22 @@ public class MainController {
         return "user/login";
     }
 
-    @GetMapping("/register")
-    public String showRegistrationForm(Model model, String status){
+    @GetMapping("/register_freelancer")
+    public String showRegistrationFormFreelancer(Model model, String status){
         model.addAttribute("user", new User());
-        return "user/signup_form";
+        return "freelancer/registration_form";
+    }
+
+    @GetMapping("/register_employer")
+    public String showRegistrationFormEmployer(Model model, String status){
+        model.addAttribute("user", new User());
+        return "employer/registration_form";
+    }
+
+    @GetMapping("/register_admin")
+    public String showRegistrationFormAdmin(Model model, String status){
+        model.addAttribute("user", new User());
+        return "admin/registration_form";
     }
 
 

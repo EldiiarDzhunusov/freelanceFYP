@@ -5,6 +5,7 @@ import com.uca.freelance.BussinessLogicLayer.serviceImplementations.UserService;
 import com.uca.freelance.DataAccessLayer.entities.Job;
 import com.uca.freelance.DataAccessLayer.entities.Skill;
 import com.uca.freelance.DataAccessLayer.entities.User;
+import com.uca.freelance.DataAccessLayer.models.Role;
 import com.uca.freelance.DataAccessLayer.repositories.SkillRepository;
 import com.uca.freelance.DataAccessLayer.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,11 +33,32 @@ public class UserController {
     @Autowired
     private SkillService skillService;
 
-    @PostMapping("/process_register")
-    public String processRegister(User user){
+    @PostMapping("/process_register_freelancer")
+    public String processRegisterFreelancer(User user){
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
+        user.setRole(Role.FREELANCER);
+        userService.save(user);
+        return "user/register_success";
+    }
+
+    @PostMapping("/process_register_employer")
+    public String processRegisterEmployer(User user){
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encodedPassword);
+        user.setRole(Role.EMPLOYER);
+        userService.save(user);
+        return "user/register_success";
+    }
+
+    @PostMapping("/process_register_admin")
+    public String processRegisterAdmin(User user){
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encodedPassword);
+        user.setRole(Role.ADMIN);
         userService.save(user);
         return "user/register_success";
     }
