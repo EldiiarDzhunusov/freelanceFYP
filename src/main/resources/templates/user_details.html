@@ -24,6 +24,36 @@
 
     </td>
 
+
+    <div align="left">
+        <h2>Jobs Posted</h2>
+    </div>
+
+    <div>
+        <table class="table table-striped table-bordered">
+            <thead class="thead-dark">
+            <tr>
+                <th>User ID</th>
+                <th>E-mail</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>CRUD</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user: ${skill.userList}">
+                <td th:text="${user.id}">User ID</td>
+                <td th:text="${user.email}">E-mail</td>
+                <td th:text="${user.firstName}">First Name</td>
+                <td th:text="${user.lastName}">Last Name</td>
+                <td>
+                    <a th:href="@{/users/profile/{id}(id=${user.id})}">Details</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
 </div>
 </body>
 </html>
