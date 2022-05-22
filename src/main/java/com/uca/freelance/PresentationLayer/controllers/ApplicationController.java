@@ -39,7 +39,7 @@ public class ApplicationController {
         application1.setJobTakeId(id);
         model.addAttribute("application1" , application1);
 
-        return "applications/application_create";
+        return "application/create";
     }
 
     @PostMapping(path = "/application/create")
@@ -58,6 +58,6 @@ public class ApplicationController {
     public String listOfAllApplications(Model model){
         List<Application> applicationList = applicationRepository.findAll();
         model.addAttribute("applicationList", applicationList);
-        return "applications/application_list";
+        return "application/list";
     }
 }

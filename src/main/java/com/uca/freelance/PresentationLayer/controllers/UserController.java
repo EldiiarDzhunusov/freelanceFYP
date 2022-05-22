@@ -1,5 +1,6 @@
 package com.uca.freelance.PresentationLayer.controllers;
 
+import com.uca.freelance.DataAccessLayer.entities.Job;
 import com.uca.freelance.DataAccessLayer.entities.Skill;
 import com.uca.freelance.DataAccessLayer.entities.User;
 import com.uca.freelance.DataAccessLayer.repositories.SkillRepository;
@@ -38,7 +39,7 @@ public class UserController {
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
         userRepository.save(user);
-        return "register_success";
+        return "user/register_success";
     }
 
     @GetMapping(path = {"/users","/users/search"})
@@ -51,7 +52,7 @@ public class UserController {
         }
         model.addAttribute("listUsers",userList);
 
-        return "users";
+        return "user/list";
     }
 
     @GetMapping("/users/edit/profile/{id}")
@@ -59,7 +60,7 @@ public class UserController {
         User user = userRepository.findById(id).orElseThrow(()
                 -> new IllegalArgumentException("Invalid user Id: " +id));
         model.addAttribute("user",user);
-        return "update_user";
+        return "user/edit";
     }
 
 
@@ -68,14 +69,14 @@ public class UserController {
                              BindingResult result, Model model){
         if(result.hasErrors()){
             user.setId(id);
-            return "users";
+            return "user/list";
         }
 
         userRepository.save(user);
 
         List<User> userList = userRepository.findAll();
         model.addAttribute("listUsers",userList);
-        return "users";
+        return "user/list";
     }
 
     @GetMapping("/users/delete/{id}")
@@ -83,9 +84,8 @@ public class UserController {
         Optional<User> user = userRepository.findById(id);
         if(user.isPresent()){
             userRepository.deleteById(id);
-            List<User> userList = userRepository.findAll();
-            model.addAttribute("listUsers",userList);
-            return "users";
+
+            return "redirect:/users";
         }else{
             throw new IllegalArgumentException("User do not have permission to delete this user");
         }
@@ -99,7 +99,8 @@ public class UserController {
 
         if(user.isPresent()){
             model.addAttribute("user",user.get());
-            return "user_details";
+            List<Job> jobList = (List<Job>) user.get().getUserJobs();
+            return "user/details";
         }else{
             return "index";
         }
@@ -113,9 +114,9 @@ public class UserController {
 
         if(user.isPresent()){
             model.addAttribute("user",user.get());
-            return "update_password";
+            return "user/update_password";
         }
-        return "index";
+        return "redirect:/users/profile/"+id;
 
     }
 
@@ -128,7 +129,7 @@ public class UserController {
 
         List<User> userList = userRepository.findAll();
         model.addAttribute("listUsers",userList);
-        return "users";
+        return "user/list";
     }
 
     @GetMapping("/users/skills/{id}")
@@ -137,7 +138,7 @@ public class UserController {
         if(user.isPresent()){
             model.addAttribute("skills",user.get().getUserSkills());
             model.addAttribute("user",user.get());
-            return "user_skills";
+            return "user/skills";
         }
         return "index";
     }
@@ -149,7 +150,7 @@ public class UserController {
             model.addAttribute("userSkills", user.get().getUserSkills());
             model.addAttribute("skills",skillRepository.findAll());
             model.addAttribute("user",user.get());
-            return "user_update_skills";
+            return "user/update_skills";
         }
         return "index";
     }

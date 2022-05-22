@@ -3,7 +3,6 @@ package com.uca.freelance.PresentationLayer.controllers;
 import com.uca.freelance.DataAccessLayer.entities.Skill;
 import com.uca.freelance.DataAccessLayer.repositories.SkillRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
@@ -28,21 +27,21 @@ public class SkillController {
             listSkills= skillRepository.findAll();
         }
         model.addAttribute("listSkills",listSkills);
-        return "skills";
+        return "skill/list";
     }
 
     @GetMapping("/skills/{id}")
     public String skillDetails(@PathVariable("id") Long id, Model model){
         Skill skill = skillRepository.getById(id);
         model.addAttribute("skill",skill);
-        return "skill_details";
+        return "skill/details";
     }
 
     @GetMapping("/skills/edit/{id}")
     public String skillsEdit(@PathVariable("id") Long id, Model model){
         Skill skill = skillRepository.getById(id);
         model.addAttribute("skill",skill);
-        return "skill_update";
+        return "skill/update";
     }
 
     @PostMapping("/skills/update/{id}")
@@ -54,7 +53,7 @@ public class SkillController {
     @GetMapping("/skills/new")
     public String showNewSkillForm(Model model){
         model.addAttribute("skill", new Skill());
-        return "skill_create_form";
+        return "skill/create_form";
     }
 
     @PostMapping("/skills/create")
@@ -65,7 +64,9 @@ public class SkillController {
 
     @GetMapping("/skills/delete/{id}")
     public String deleteSkill(@PathVariable("id") Long id){
-        skillRepository.delete(skillRepository.getById(id));
+        Skill skill = skillRepository.getById(id);
+        System.out.println(skill.getName());
+        skillRepository.delete(skill);
         return "redirect:/skills";
     }
 }

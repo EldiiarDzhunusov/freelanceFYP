@@ -46,7 +46,7 @@ public class JobController {
         Long userId = userRepository.findByEmail(principal.getName()).getId();
         model.addAttribute("jobs", jobs);
         model.addAttribute("userId", userId);
-        return "job_list";
+        return "job/list";
     }
 
     @GetMapping("/jobs/{id}")
@@ -56,7 +56,7 @@ public class JobController {
             Optional<User> user = userRepository.findById(job.get().getAuthorId());
             model.addAttribute("user",user.get());
             model.addAttribute("job",job.get());
-            return "job_details";
+            return "job/details";
         }
         //raise error
         return null;
@@ -74,7 +74,7 @@ public class JobController {
         job.setAuthorId(id);
         model.addAttribute("job",job);
         model.addAttribute("skills",skillRepository.findAll());
-        return "job_create_form";
+        return "job/create_form";
     }
 
     @PostMapping("/jobs/create")
@@ -108,7 +108,7 @@ public class JobController {
             model.addAttribute("job",job.get());
             model.addAttribute("skills",skills);
         }
-        return "job_edit";
+        return "job/edit";
     }
 
     @PostMapping("/jobs/update/{id}")

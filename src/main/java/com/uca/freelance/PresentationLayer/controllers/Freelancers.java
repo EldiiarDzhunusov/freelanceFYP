@@ -32,7 +32,7 @@ public class Freelancers {
         model.addAttribute("textForSearch",textForSearch);
         model.addAttribute("listUsers",userList);
 
-        return "freelancers/freelancers_list";
+        return "freelancer/list";
     }
 
     @GetMapping("/{id}")
@@ -42,7 +42,7 @@ public class Freelancers {
 
         if(user.isPresent()){
             model.addAttribute("user",user.get());
-            return "freelancers/freelancers_details";
+            return "freelancer/details";
         }else{
             return "main_page";
         }
