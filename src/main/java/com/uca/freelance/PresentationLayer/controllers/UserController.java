@@ -121,15 +121,11 @@ public class UserController {
         User principalUser = userService.findByEmail(principal.getName());
 
         if(principalUser.getId()==user.getId() || principalUser.getRole()==Role.ADMIN){
-            List<Job> jobList;
+
             model.addAttribute("user",user);
             if(user.getRole()==Role.EMPLOYER){
-                jobList = user.getJobsOwned();
-                model.addAttribute("jobList",jobList);
                 return "employer/details";
             }else{
-                jobList = user.getJobsDoing();
-                model.addAttribute("jobList",jobList);
                 return "freelancer/details";
             }
 

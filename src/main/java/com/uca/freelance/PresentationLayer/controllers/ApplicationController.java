@@ -7,6 +7,8 @@ import com.uca.freelance.DataAccessLayer.entities.Application;
 import com.uca.freelance.DataAccessLayer.entities.Job;
 import com.uca.freelance.DataAccessLayer.entities.User;
 import com.uca.freelance.DataAccessLayer.models.ApplicationStatus;
+import com.uca.freelance.DataAccessLayer.models.JobStatus;
+import com.uca.freelance.DataAccessLayer.models.Role;
 import com.uca.freelance.DataAccessLayer.repositories.ApplicationRepository;
 import com.uca.freelance.DataAccessLayer.repositories.JobRepository;
 import com.uca.freelance.DataAccessLayer.repositories.UserRepository;
@@ -49,7 +51,7 @@ public class ApplicationController {
     @PostMapping(path = "/application/create")
     public String createProject(@Validated Application application, Principal principal){
         User user = userService.findByEmail(principal.getName());
-        application.setUser(user);
+        application.setFreelancer(user);
         Optional<Job> job = jobService.findById(application.getJobTakeId());
         application.setJob(job.get());
         application.setApplicationStatus(ApplicationStatus.PENDING);
@@ -63,5 +65,26 @@ public class ApplicationController {
         List<Application> applicationList = applicationService.findAll();
         model.addAttribute("applicationList", applicationList);
         return "application/list";
+    }
+
+    @GetMapping(path = "/application/{id}")
+    public String applicationDetails(@PathVariable("id") Long id, Model model){
+        model.addAttribute("application1",applicationService.getById(id));
+        return "application/details";
+    }
+
+    @GetMapping(path = "/application/approve/{id}")
+    public String applicationApprove(@PathVariable("id") Long id, Model model, Principal principal){
+        Application application = applicationService.getById(id);
+        User currUser = userService.findByEmail(principal.getName());
+        if(application.getJob().getEmployer().getEmail().equals(currUser.getEmail()) || currUser.getRole()== Role.ADMIN){
+            application.setFreelancer(currUser);
+            application.getJob().setJobStatus(JobStatus.STARTED);
+            application.getJob().setFreelancer(currUser);
+            application.setApplicationStatus(ApplicationStatus.ACCEPTED);
+            applicationService.save(application);
+            return "redirect:/application/"+id;
+        }
+        return null;
     }
 }

@@ -44,7 +44,7 @@ public class User {
     @OneToMany(mappedBy="freelancer")
     private List<Job> jobsDoing;
 
-    @OneToMany(mappedBy="user")
+    @OneToMany(mappedBy="freelancer")
     private Collection<Application> applicationsList;
 
     private Role role;

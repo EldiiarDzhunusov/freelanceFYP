@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name = "jobs")
@@ -45,10 +46,10 @@ public class Job {
                     name = "job_id",referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(
                     name = "skill_id", referencedColumnName = "id"))
-    private Collection<Skill> jobSkills;
+    private List<Skill> jobSkills;
 
     @OneToMany(mappedBy="job")
-    private Collection<Application> applicationList;
+    private List<Application> applicationList;
 
 
 

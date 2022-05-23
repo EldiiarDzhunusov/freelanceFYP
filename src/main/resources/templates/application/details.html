@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Application Details</title>
+    <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css" />
+    <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container text-center">
+    <div>
+        <h1>Application details</h1>
+    </div>
+
+    <div>
+        <table class="table table-striped table-bordered">
+            <thead class="thead-dark">
+            <tr>
+                <th>Application Id</th>
+                <th>Description</th>
+                <th>Proposed Price</th>
+                <th>Status</th>
+                <th>Freelancer</th>
+                <th>Author</th>
+                <th>Job</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <!--      <tr th:each="job: ${job}">-->
+                <td th:text="${application1.id}"></td>
+                <td th:text="${application1.description}"></td>
+                <td th:text="${application1.proposedPrice}"></td>
+                <td th:text="${application1.getApplicationStatus()}"></td>
+                <td>
+                    <a th:href="@{/users/profile/{id}(id=${application1.freelancer.getId()})}" th:text="${application1.getFreelancer().getFullNameAbbreviation()}"></a>
+                </td>
+                <td>
+                    <a th:href="@{/users/profile/{id}(id=${application1.getJob().getEmployer().getId()})}" th:text="${application1.getJob().getEmployer().getFullNameAbbreviation()}"></a>
+                </td>
+                <td>
+                    <a th:href="@{/jobs/{id}(id=${application1.getJob().getId()})}" th:text="${application1.getJob().getName()}"></a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div>
+        <a th:href="@{/application/approve/{id}(id = ${application1.getId()})}" th:text="Approve"></a>
+        |
+        <a th:href="@{/application/reject/{id}(id = ${application1.getId()})}" th:text="Reject"></a>
+    </div>
+
+
+
+
+
+
+
+
+</div>
+</body>
+</html>

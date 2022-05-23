@@ -14,6 +14,12 @@
   </div>
   <div>
     <h2>  <a th:href="@{/jobs/edit/{id}(id=${job.id})}">Edit</a></h2>
+
+    <div th:if="${job.getJobStatus().toString().equals('PENDING')}">
+      <h2>  <a th:href="@{/application/apply/{id}(id=${job.id})}">Apply</a></h2>
+    </div>
+
+
   </div>
   <div>
     <table class="table table-striped table-bordered">
@@ -23,7 +29,7 @@
         <th>Name</th>
         <th>Price</th>
         <th>Description</th>
-        <th>isStarted</th>
+        <th>Job Status</th>
         <th>Author</th>
       </tr>
       </thead>
@@ -34,9 +40,9 @@
         <td th:text="${job.name}">Name</td>
         <td th:text="${job.price}">Price</td>
         <td th:text="${job.description}">Description</td>
-        <td th:text="${job.isStarted}">isStarted</td>
+        <td th:text="${job.getJobStatus()}">Job Status</td>
         <td>
-          <a th:href="@{/users/profile/{id}(id=${job.authorId})}">Author</a>
+          <a th:href="@{/users/profile/{id}(id=${job.getEmployer().getId()})}">Author</a>
         </td>
       </tr>
       </tbody>
@@ -66,6 +72,40 @@
 
         <td>
           <a th:href="@{/skills/{id}(id=${skill.id})}">Details</a>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div align="left">
+    <h3>Applications:</h3>
+  </div>
+
+
+  <div>
+    <table class="table table-striped table-bordered">
+      <thead class="thead-dark">
+      <tr>
+        <th>Application ID</th>
+        <th>Description</th>
+        <th>Proposed Price</th>
+        <th>Freelancer</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="application1: ${job.applicationList}">
+        <td th:text="${application1.getId()}"></td>
+        <td th:text="${application1.getDescription()}"></td>
+        <td th:text="${application1.getProposedPrice()}"></td>
+        <td>
+          <a th:href="@{/users/profile/{id}(id=${application1.getFreelancer().getId()})}" th:text="${application1.getFreelancer().getFullNameAbbreviation()}"></a>
+        </td>
+        <td th:text="${application1.getApplicationStatus()}"></td>
+        <td>
+          <a th:href="@{/application/{id}(id=${application1.getId()})}">Details</a>
         </td>
       </tr>
       </tbody>

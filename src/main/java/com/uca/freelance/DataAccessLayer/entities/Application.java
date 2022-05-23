@@ -35,8 +35,8 @@ public class Application {
     private Job job;
 
     @ManyToOne
-    @JoinColumn(name="user_id", nullable=false)
-    private User user;
+    @JoinColumn(name="freelancer_id", nullable=false)
+    private User freelancer;
 
 
 

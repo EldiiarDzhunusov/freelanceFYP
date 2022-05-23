@@ -41,7 +41,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="job: ${jobList}">
+                <tr th:each="job: ${user.jobsOwned}">
                     <td th:text="${job.id}"></td>
                     <td th:text="${job.description}"></td>
                     <td th:text="${job.price}"></td>

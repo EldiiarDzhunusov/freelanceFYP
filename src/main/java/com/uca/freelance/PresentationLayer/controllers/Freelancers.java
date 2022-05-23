@@ -36,7 +36,7 @@ public class Freelancers {
         return "freelancer/list";
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("freelancer/{id}")
     public String profileInfo(@PathVariable(name = "id") Long id, Model model){
 
         Optional<User> user = userService.findById(id);

@@ -1,8 +1,10 @@
 package com.uca.freelance.PresentationLayer.controllers;
 
+import com.uca.freelance.BussinessLogicLayer.serviceImplementations.ApplicationService;
 import com.uca.freelance.BussinessLogicLayer.serviceImplementations.JobService;
 import com.uca.freelance.BussinessLogicLayer.serviceImplementations.SkillService;
 import com.uca.freelance.BussinessLogicLayer.serviceImplementations.UserService;
+import com.uca.freelance.DataAccessLayer.entities.Application;
 import com.uca.freelance.DataAccessLayer.entities.Job;
 import com.uca.freelance.DataAccessLayer.entities.Skill;
 import com.uca.freelance.DataAccessLayer.entities.User;
@@ -37,6 +39,9 @@ public class JobController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private ApplicationService applicationService;
+
     @GetMapping(path = {"/jobs","/jobs/search"})
     public String showAllJobs(Model model, Principal principal, String keyword){
         List<Job> jobs;
@@ -57,8 +62,8 @@ public class JobController {
     public String jobDetails(@PathVariable("id") Long id, Model model){
         Optional<Job> job = jobService.findById(id);
         if(job.isPresent()){
-            System.out.println(job.get().getAuthorIdToFindEntity());
             Optional<User> user = userService.findById(job.get().getAuthorIdToFindEntity());
+
             model.addAttribute("user",user.get());
             model.addAttribute("job",job.get());
             return "job/details";
@@ -85,7 +90,7 @@ public class JobController {
     @PostMapping("/jobs/create")
     public String createJob(@Validated Job job, @RequestParam("skills[]") String[] skillId){
         job.setJobStatus(JobStatus.PENDING);
-        Collection<Skill> skills = new ArrayList<>();
+        List<Skill> skills = new ArrayList<>();
 
         for (int i = 0; i < skillId.length; i++) {
             try {
@@ -120,7 +125,7 @@ public class JobController {
     @PostMapping("/jobs/update/{id}")
     public String updateJob(@PathVariable("id") Long id, @Validated Job job, @RequestParam("skills[]") String[] skillId){
 
-        Collection<Skill> skills = new ArrayList<>();
+        List<Skill> skills = new ArrayList<>();
         for (int i = 0; i < skillId.length; i++) {
             try {
                 Long num = Long.parseLong(skillId[i]);
