@@ -47,7 +47,7 @@
                     <td th:text="${job.price}"></td>
                     <td th:text="${job.getJobStatus()}"></td>
                     <td>
-                        <a th:href="@{/jobs/{id}(id=${user.id})}">Details</a>
+                        <a th:href="@{/jobs/{id}(id=${job.id})}">Details</a>
                     </td>
                 </tr>
                 </tbody>

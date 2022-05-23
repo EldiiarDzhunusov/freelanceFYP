@@ -28,7 +28,6 @@
             </thead>
             <tbody>
             <tr>
-                <!--      <tr th:each="job: ${job}">-->
                 <td th:text="${application1.id}"></td>
                 <td th:text="${application1.description}"></td>
                 <td th:text="${application1.proposedPrice}"></td>
@@ -46,7 +45,8 @@
             </tbody>
         </table>
     </div>
-    <div>
+    <div th:if="${application1.getApplicationStatus().toString().equals('PENDING')}">
+
         <a th:href="@{/application/approve/{id}(id = ${application1.getId()})}" th:text="Approve"></a>
         |
         <a th:href="@{/application/reject/{id}(id = ${application1.getId()})}" th:text="Reject"></a>

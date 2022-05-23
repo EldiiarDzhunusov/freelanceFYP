@@ -49,7 +49,7 @@ public class ApplicationController {
     }
 
     @PostMapping(path = "/application/create")
-    public String createProject(@Validated Application application, Principal principal){
+    public String createApplication(@Validated Application application, Principal principal){
         User user = userService.findByEmail(principal.getName());
         application.setFreelancer(user);
         Optional<Job> job = jobService.findById(application.getJobTakeId());
@@ -78,10 +78,22 @@ public class ApplicationController {
         Application application = applicationService.getById(id);
         User currUser = userService.findByEmail(principal.getName());
         if(application.getJob().getEmployer().getEmail().equals(currUser.getEmail()) || currUser.getRole()== Role.ADMIN){
-            application.setFreelancer(currUser);
             application.getJob().setJobStatus(JobStatus.STARTED);
-            application.getJob().setFreelancer(currUser);
             application.setApplicationStatus(ApplicationStatus.ACCEPTED);
+            application.getJob().setFreelancer(application.getFreelancer());
+            applicationService.save(application);
+            return "redirect:/application/"+id;
+        }
+        return null;
+    }
+
+    @GetMapping(path = "/application/reject/{id}")
+    public String applicationReject(@PathVariable("id") Long id, Model model, Principal principal){
+        Application application = applicationService.getById(id);
+        User currUser = userService.findByEmail(principal.getName());
+        if(application.getJob().getEmployer().getEmail().equals(currUser.getEmail()) || currUser.getRole()== Role.ADMIN){
+
+            application.setApplicationStatus(ApplicationStatus.REJECTED);
             applicationService.save(application);
             return "redirect:/application/"+id;
         }

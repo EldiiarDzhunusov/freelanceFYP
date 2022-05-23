@@ -41,13 +41,13 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="job: ${user.getJobsDoing()}">
+            <tr th:each="job: ${user.jobsDoing}">
                 <td th:text="${job.id}"></td>
                 <td th:text="${job.description}"></td>
                 <td th:text="${job.price}"></td>
                 <td th:text="${job.getJobStatus()}"></td>
                 <td>
-                    <a th:href="@{/jobs/{id}(id=${user.id})}">Details</a>
+                    <a th:href="@{/jobs/{id}(id=${job.id})}">Details</a>
                 </td>
             </tr>
             </tbody>

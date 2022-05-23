@@ -32,7 +32,7 @@ public class Job {
     private Long freelancerIdToFindEntity;
 
     @ManyToOne
-    @JoinColumn(name="freelancer_id", nullable = true)
+    @JoinColumn(name="freelancer_id")
     private User freelancer;
 
     @ManyToOne
