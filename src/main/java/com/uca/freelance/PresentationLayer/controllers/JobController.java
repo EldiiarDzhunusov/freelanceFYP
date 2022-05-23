@@ -6,6 +6,7 @@ import com.uca.freelance.BussinessLogicLayer.serviceImplementations.UserService;
 import com.uca.freelance.DataAccessLayer.entities.Job;
 import com.uca.freelance.DataAccessLayer.entities.Skill;
 import com.uca.freelance.DataAccessLayer.entities.User;
+import com.uca.freelance.DataAccessLayer.models.JobStatus;
 import com.uca.freelance.DataAccessLayer.repositories.JobRepository;
 import com.uca.freelance.DataAccessLayer.repositories.SkillRepository;
 import com.uca.freelance.DataAccessLayer.repositories.UserRepository;
@@ -56,8 +57,8 @@ public class JobController {
     public String jobDetails(@PathVariable("id") Long id, Model model){
         Optional<Job> job = jobService.findById(id);
         if(job.isPresent()){
-            System.out.println(job.get().getAuthorId());
-            Optional<User> user = userService.findById(job.get().getAuthorId());
+            System.out.println(job.get().getAuthorIdToFindEntity());
+            Optional<User> user = userService.findById(job.get().getAuthorIdToFindEntity());
             model.addAttribute("user",user.get());
             model.addAttribute("job",job.get());
             return "job/details";
@@ -75,7 +76,7 @@ public class JobController {
     @GetMapping("/jobs/new/{id}")
     public String showNewJobForm(@PathVariable Long id, Model model){
         Job job = new Job();
-        job.setAuthorId(id);
+        job.setAuthorIdToFindEntity(id);
         model.addAttribute("job",job);
         model.addAttribute("skills",skillService.findAll());
         return "job/create_form";
@@ -83,7 +84,7 @@ public class JobController {
 
     @PostMapping("/jobs/create")
     public String createJob(@Validated Job job, @RequestParam("skills[]") String[] skillId){
-        job.setStarted(false);
+        job.setJobStatus(JobStatus.PENDING);
         Collection<Skill> skills = new ArrayList<>();
 
         for (int i = 0; i < skillId.length; i++) {
@@ -97,7 +98,8 @@ public class JobController {
             }
 
         }
-
+        //for some reason the freelancer cannot be null
+        job.setEmployer(userService.getById(job.getAuthorIdToFindEntity()));
         job.setJobSkills(skills);
         jobService.save(job);
         return "redirect:/jobs";

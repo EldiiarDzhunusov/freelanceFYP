@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -114,15 +115,27 @@ public class UserController {
     }
 
     @GetMapping("/users/profile/{id}")
-    public String profileInfo(@PathVariable(name = "id") Long id, Model model){
+    public String profileInfo(@PathVariable(name = "id") Long id, Model model, Principal principal){
 
-        Optional<User> user = userService.findById(id);
+        User user = userService.getById(id);
+        User principalUser = userService.findByEmail(principal.getName());
 
-        if(user.isPresent()){
-            model.addAttribute("user",user.get());
-            List<Job> jobList = (List<Job>) user.get().getUserJobs();
-            return "user/details";
-        }else{
+        if(principalUser.getId()==user.getId() || principalUser.getRole()==Role.ADMIN){
+            List<Job> jobList;
+            model.addAttribute("user",user);
+            if(user.getRole()==Role.EMPLOYER){
+                jobList = user.getJobsOwned();
+                model.addAttribute("jobList",jobList);
+                return "employer/details";
+            }else{
+                jobList = user.getJobsDoing();
+                model.addAttribute("jobList",jobList);
+                return "freelancer/details";
+            }
+
+        }
+        //think what link should be here
+        else{
             return "index";
         }
 

@@ -29,7 +29,7 @@
     <form th:action="@{~/jobs/update/{id}(id = ${job.id})}" th:object="${job}"
           method="post" style="max-width: 600px; margin: 0 auto;">
 
-        <input type="hidden" th:field="*{authorId}" value="th:text='${job.authorId}'"  class="form-control"  />
+        <input type="hidden" th:field="*{authorIdToFindEntity}" value="th:text='${job.authorIdToFindEntity}'"  class="form-control"  />
         <input type="hidden" th:field="*{id}" value="th:text='${job.id}'"  class="form-control"  />
 
         <div class="m-3">

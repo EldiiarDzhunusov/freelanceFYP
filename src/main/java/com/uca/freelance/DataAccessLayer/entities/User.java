@@ -6,6 +6,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -37,14 +38,11 @@ public class User {
                     name = "skill_id", referencedColumnName = "id"))
     private Collection<Skill> userSkills;
 
-    @ManyToMany
-    @JoinTable(
-            name = "users_jobs",
-            joinColumns = @JoinColumn(
-                    name = "user_id",referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(
-                    name = "job_id", referencedColumnName = "id"))
-    private Collection<Job> userJobs;
+    @OneToMany(mappedBy="employer")
+    private List<Job> jobsOwned;
+
+    @OneToMany(mappedBy="freelancer")
+    private List<Job> jobsDoing;
 
     @OneToMany(mappedBy="user")
     private Collection<Application> applicationsList;

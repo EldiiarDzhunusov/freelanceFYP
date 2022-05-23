@@ -29,7 +29,7 @@
     <form th:action="@{/jobs/create}" th:object="${job}"
           method="post" style="max-width: 600px; margin: 0 auto;">
 
-        <input type="hidden" th:field="*{authorId}" value="th:text='${job.authorId}'"  class="form-control"  />
+        <input type="hidden" th:field="*{authorIdToFindEntity}" value="th:text='${job.authorId}'"  class="form-control"  />
 
 
         <div class="m-3">

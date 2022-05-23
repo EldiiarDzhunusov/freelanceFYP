@@ -44,7 +44,7 @@
                 <td th:text="${job.name}">Name </td>
                 <td th:text="${job.description}">Description</td>
                 <td th:text="${job.price}">Price</td>
-                <td><a th:href="@{/users/profile/{id}(id=${job.authorId})}">Author Details</a></td>
+                <td><a th:href="@{/users/profile/{id}(id=${job.authorIdToFindEntity})}">Author Details</a></td>
                 <td>
                     <a th:href="@{/jobs/{id}(id=${job.id})}">Details</a>
                     <a th:href="@{/jobs/edit/{id}(id=${job.id})}">Edit</a>

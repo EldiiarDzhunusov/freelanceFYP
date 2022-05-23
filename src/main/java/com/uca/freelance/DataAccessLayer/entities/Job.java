@@ -1,5 +1,6 @@
 package com.uca.freelance.DataAccessLayer.entities;
 
+import com.uca.freelance.DataAccessLayer.models.JobStatus;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,16 +22,21 @@ public class Job {
 
     private String description;
 
-    @Column(name = "is_started")
-    private boolean isStarted;
+    @Column(name = "job_status")
+    private JobStatus jobStatus;
 
 
-    private Long authorId;
+    private Long authorIdToFindEntity;
 
-    private Long freelancerId;
+    private Long freelancerIdToFindEntity;
 
-    @ManyToMany(mappedBy = "userJobs")
-    private Collection<User> users;
+    @ManyToOne
+    @JoinColumn(name="freelancer_id", nullable = true)
+    private User freelancer;
+
+    @ManyToOne
+    @JoinColumn(name="employer_id", nullable=false)
+    private User employer;
 
     @ManyToMany
     @JoinTable(
@@ -65,10 +71,4 @@ public class Job {
     }
 
 
-    public Job(String name, Double price, String description, boolean isStarted) {
-        this.name = name;
-        this.price = price;
-        this.description = description;
-        this.isStarted = isStarted;
-    }
 }
