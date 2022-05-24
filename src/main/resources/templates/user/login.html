@@ -10,18 +10,17 @@
     <section class="site-section ">
         <div class="container">
             <div class="col-lg-6">
-                <h2 class="mb-4">Log In To Freelance Platform</h2>
+                <h2 class="mb-4">Войти</h2>
                 <form th:action="@{/login}" method="post" class="p-4 border rounded">
 
                     <!--                    error message-->
                     <div th:if="${param.error}">
-                        <div class="alert alert-danger">Invalid username or
-                            password.</div>
+                        <div class="alert alert-danger">Неправильный логин или пароль.</div>
                     </div>
 
                     <!-- logout message -->
                     <div th:if="${param.logout}">
-                        <div class="alert alert-info">You have been logged out.</div>
+                        <div class="alert alert-info">Вы успешно вышли из аккаунта.</div>
                     </div>
                     <!--                    -->
                     <div class="row form-group">
@@ -34,7 +33,7 @@
 
                     <div class="row form-group">
                         <div class="col-md-12 mb-3 mb-md-0">
-                            <label class="text-black" for="password">Password</label>:
+                            <label class="text-black" for="password">Пароль</label>:
                             <input type="password" id="password" name="password" class="form-control"
                                        placeholder="Enter Password" />
                         </div>
@@ -42,14 +41,14 @@
 
                     <div class="row form-group">
                         <div class="col-md-12">
-                            <input type="submit"  name="login-submit" id ="login-submit" value="Log In" class="btn px-4 btn-primary text-white">
+                            <input type="submit"  name="login-submit" id ="login-submit" value="Войти" class="btn px-4 btn-primary text-white">
                         </div>
                     </div>
                 </form>
 
 
                 <div class="form-group">
-                      <span>New user? <a href="/static" th:href="@{/register_freelancer}">Freelancer</a> or <a href="/static" th:href="@{/register_employer}">Employer</a></span>
+                      <span>Зарегистрироваться как <a href="/static" th:href="@{/register_freelancer}">Фрилансер</a> или <a href="/static" th:href="@{/register_employer}">Работодатель</a></span>
                 </div>
 
             </div>

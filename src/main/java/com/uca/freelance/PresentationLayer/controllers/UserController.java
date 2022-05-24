@@ -41,7 +41,7 @@ public class UserController {
         user.setPassword(encodedPassword);
         user.setRole(Role.FREELANCER);
         userService.save(user);
-        return "user/register_success";
+        return "redirect:/login";
     }
 
     @PostMapping("/process_register_employer")
@@ -53,7 +53,7 @@ public class UserController {
         user.setPassword(encodedPassword);
         user.setRole(Role.EMPLOYER);
         userService.save(user);
-        return "user/register_success";
+        return "redirect:/login";
     }
 
     @PostMapping("/process_register_admin")
@@ -63,7 +63,7 @@ public class UserController {
         user.setPassword(encodedPassword);
         user.setRole(Role.ADMIN);
         userService.save(user);
-        return "user/register_success";
+        return "redirect:/login";
     }
 
     @GetMapping(path = {"/users","/users/search"})

@@ -48,10 +48,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/static/**").permitAll()
-                .antMatchers("/freelancers","index").authenticated()
-                .antMatchers("/jobs").authenticated()
+                .antMatchers("/users").authenticated()
                 .antMatchers("/projects").authenticated()
-                .anyRequest().permitAll()
+                .antMatchers("/skills").authenticated()
+                .anyRequest()
+                .permitAll()
                 .and()
                 .formLogin()
                 .loginPage("/login")
@@ -59,7 +60,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .logoutSuccessUrl("/")
                 .permitAll();
     }
 
