@@ -36,6 +36,10 @@ public class UserController {
 
     @PostMapping("/process_register_freelancer")
     public String processRegisterFreelancer(User user){
+        if(userService.findByEmail(user.getEmail())!=null){
+            return "redirect:/register_freelancer";
+        }
+
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
@@ -46,7 +50,9 @@ public class UserController {
 
     @PostMapping("/process_register_employer")
     public String processRegisterEmployer(User user){
-
+        if(userService.findByEmail(user.getEmail())!=null){
+            return "redirect:/register_employer";
+        }
 
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(user.getPassword());
@@ -58,6 +64,10 @@ public class UserController {
 
     @PostMapping("/process_register_admin")
     public String processRegisterAdmin(User user){
+        if(userService.findByEmail(user.getEmail())!=null){
+            return "redirect:/register_admin";
+        }
+
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
