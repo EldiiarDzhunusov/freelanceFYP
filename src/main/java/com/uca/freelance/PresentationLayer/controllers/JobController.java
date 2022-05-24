@@ -161,7 +161,8 @@ public class JobController {
             }
 
         }
-        job.setEmployer(jobService.getById(job.getAuthorIdToFindEntity()).getEmployer());
+
+        job.setEmployer(userService.getById(job.getAuthorIdToFindEntity()));
         job.setJobSkills(skills);
         job.setJobStatus(JobStatus.PENDING);
         jobService.save(job);

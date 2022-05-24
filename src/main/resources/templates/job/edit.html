@@ -74,7 +74,7 @@
                     <div class="form-group row">
                         <label class="col-4 col-form-label">Требуемые Навыки: </label>
                         <div class="col-8" >
-                            <select  class="js-example-basic-multiple" name="skills[]" multiple="multiple" >
+                            <select  class="js-example-basic-multiple" name="skills[]" multiple="multiple" required>
 
                                 <option th:each="skill : ${skills}" th:value="${skill.getId()}" th:text="${skill.getName()}"></option>
 
