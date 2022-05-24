@@ -48,11 +48,12 @@
         </div>
         <div class="col-lg-4">
           <div class="row">
-            <div class="col-6" th:if="${isAdmin}">
+            <div class="col-6" th:if="${isAdminOrOwner}">
               <a th:href="@{/jobs/edit/{id}(id = ${job.id})}" class="btn btn-block btn-primary btn-md">Обновить</a>
 
             </div>
-            <div class="col-6" th:if="${job.getJobStatus().toString().equals('PENDING')}">
+
+            <div class="col-6" th:if="${job.getJobStatus().toString().equals('PENDING') && isFreelancer}">
                 <a th:href="@{/application/apply/{id}(id = ${job.id})}" class="btn btn-block btn-primary btn-md">Подать Заявку</a>
             </div>
 
@@ -83,13 +84,16 @@
           <div class="bg-light p-3 border rounded mb-4">
             <h3 class="text-primary  mt-3 h5 pl-3 mb-3 ">Информация</h3>
             <ul class="list-unstyled pl-3 mb-0">
-              <li class="mb-2"><strong class="text-black" >Автор: </strong><a th:href="@{/users/profile/{id}(id = ${job.getEmployer().id})}" th:text="${job.getEmployer().getFullNameAbbreviation()}"></a></li>
+              <li class="mb-2"><strong class="text-black" >Автор: </strong><a th:text="${job.getEmployer().getFullNameAbbreviation()}"></a></li>
               <li class="mb-2"><strong class="text-black">Цена $: </strong> <p th:text="${job.getPrice()}"></p> </li>
               <div th:if="${job.getJobStatus().toString().equals('PENDING')}">
                 <li class="mb-2"><strong class="text-black">Подано заявок: </strong> <p th:text="${job.getApplicationList().size()}"></p></li>
               </div>
               <div th:if="${job.getJobStatus().toString().equals('STARTED')}">
                 <li class="mb-2"><strong class="text-black">Фрилансер: </strong> <a th:href="@{/users/profile/{id}(id = ${job.getFreelancer().id})}" th:text="' ' +${job.getFreelancer().getFullNameAbbreviation()}"></a></li>
+              </div>
+              <div th:if="${isCurrentFreelancer || isAdminOrOwner}">
+                  <li class="mb-2"><strong class="text-black">Email: </strong> <a  th:text="${job.employer.getEmail()}"></a></li>
               </div>
 
             </ul>
@@ -100,7 +104,7 @@
     </div>
   </section>
 
-  <section th:if="${isAdmin && job.applicationList.size()>0}" class="site-section" id="next" style="padding-top: 0; ">
+  <section th:if="${isAdminOrOwner && job.applicationList.size()>0}" class="site-section" id="next" style="padding-top: 0; ">
     <div class="container" >
       <div class="mb-5" >
         <h3 class="h5 d-flex align-items-center mb-4 text-primary"><span class="icon-turned_in mr-3"></span>Заявки</h3>
@@ -139,11 +143,11 @@
   <section class="site-section" style="padding-top: 0 !important; ">
       <div class="container" >
       <div class="row mb-5">
-        <div class="col-6" th:if="${isAdmin}">
+        <div class="col-6" th:if="${isAdminOrOwner}">
           <a th:href="@{/jobs/edit/{id}(id = ${job.id})}" class="btn btn-block btn-primary btn-md">Изменить описание работы</a>
 
         </div>
-        <div class="col-6" th:if="${job.getJobStatus().toString().equals('PENDING')}">
+        <div class="col-6" th:if="${job.getJobStatus().toString().equals('PENDING') && isFreelancer}">
           <a th:href="@{/application/apply/{id}(id = ${job.id})}" class="btn btn-block btn-primary btn-md">Подать Заявку</a>
         </div>
       </div>

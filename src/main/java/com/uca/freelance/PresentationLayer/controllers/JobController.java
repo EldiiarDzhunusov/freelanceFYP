@@ -68,9 +68,20 @@ public class JobController {
         Optional<Job> job = jobService.findById(id);
         if(job.isPresent()){
             Optional<User> user = userService.findById(job.get().getAuthorIdToFindEntity());
-            boolean isAdmin = user.get().getEmail().equals(principal.getName())
+            boolean isAdminOrOwner = user.get().getEmail().equals(principal.getName())
                     || userService.findByEmail(principal.getName()).getRole()== Role.ADMIN;
-            model.addAttribute("isAdmin",isAdmin);
+
+            boolean isFreelancer = currUser.getRole().equals(Role.FREELANCER);
+
+            boolean isCurrentFreelancer = false;
+
+            if(job.get().getFreelancer()!=null && job.get().getFreelancer().getId() == currUser.getId()){
+                isCurrentFreelancer = true;
+            }
+
+            model.addAttribute("isAdminOrOwner",isAdminOrOwner);
+            model.addAttribute("isFreelancer",isFreelancer);
+            model.addAttribute("isCurrentFreelancer", isCurrentFreelancer);
             model.addAttribute("user",user.get());
             model.addAttribute("job",job.get());
             return "job/details";

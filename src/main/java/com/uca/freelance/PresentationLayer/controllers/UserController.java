@@ -128,28 +128,22 @@ public class UserController {
         User currUser = userService.findByEmail(principal.getName());
         model.addAttribute("currUser", currUser);
 
-
         User user = userService.getById(id);
-        User principalUser = userService.findByEmail(principal.getName());
-        boolean isAdmin = true;
-        model.addAttribute("isAdmin", isAdmin);
-//        if(principalUser.getId()==user.getId() || principalUser.getRole()==Role.ADMIN){
 
-            model.addAttribute("user",user);
-            if(user.getRole()==Role.EMPLOYER){
+        boolean isOwner = currUser.getId()==user.getId() || currUser.getRole().equals(Role.ADMIN);
+        model.addAttribute("isOwner",isOwner);
+        model.addAttribute("user",user);
+        if(user.getRole()==Role.EMPLOYER ){
+            if(currUser.getId()==user.getId() || currUser.getRole().equals(Role.ADMIN)){
                 model.addAttribute("listJobs", user.getJobsOwned());
                 return "employer/details";
-            }else{
-                model.addAttribute("listJobs", user.getJobsDoing());
-                return "freelancer/details";
             }
+            return "redirect:/freelancers";
 
-//        }
-//        //think what link should be here
-//        else{
-//            return "index";
-//        }
-
+        }else{
+            model.addAttribute("listJobs", user.getJobsDoing());
+            return "freelancer/details";
+        }
 
     }
 

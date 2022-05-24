@@ -42,7 +42,7 @@
             <tr th:each="job: ${jobs}">
                 <td th:text="${job.id}">Job ID</td>
                 <td th:text="${job.name}">Name </td>
-                <td th:text="${job.description}">Description</td>
+                <td th:text="${job.description}" style="word-break: break-all;">Description</td>
                 <td th:text="${job.price}">Price</td>
                 <td><a th:href="@{/users/profile/{id}(id=${job.authorIdToFindEntity})}">Author Details</a></td>
                 <td>

@@ -39,6 +39,8 @@
 
                 <div class="sidebar-box">
 
+                    <a th:href="@{/jobs/new/{id}(id = ${user.id})}" class="btn btn-block btn-primary btn-md">Создать Работу</a>
+                    <br>
                     <h3>О работодателе</h3>
                     <h7 th:text="'Имя: ' +${user.getFirstName()}"></h7><br>
                     <h7 th:text="'Фамилия: ' +${user.getLastName()}"></h7><br>
