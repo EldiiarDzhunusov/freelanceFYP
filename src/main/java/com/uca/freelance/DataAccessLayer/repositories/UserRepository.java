@@ -15,4 +15,13 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query(value = "select * from users u where u.first_name like %:keyword% or u.last_name like %:keyword% or u.description like %:keyword% ",nativeQuery = true)
     List<User> findByKeyword(@Param("keyword") String keyword);
+
+    @Query(value = "select * from users u where u.role=1 and (u.first_name like %:keyword% or  u.last_name like %:keyword% or  u.description like %:keyword%) ",nativeQuery = true)
+    List<User> findFreelancersByKeyword(@Param("keyword") String keyword);
+
+    @Query(value = "select * from users u where u.role=1",nativeQuery = true)
+    List<User> findAllFreelancers();
+
+    @Query(value = "select * from users u where u.role=2",nativeQuery = true)
+    List<User> findAllEmployers();
 }

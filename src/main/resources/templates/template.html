@@ -57,15 +57,11 @@
                 <div class="right-cta-menu text-right d-flex align-items-center col-6">
                     <div class="ml-auto">
 
-                        <div sec:authorize="!isAuthenticated()">
-
-                            <li ><a th:href="@{/login}" class="btn btn-primary border-width-2 d-none d-lg-inline-block"><span class="mr-2 icon-lock_outline"></span>Войти</a></li>
-                        </div>
                         <div sec:authorize="isAuthenticated()">
+                            <a th:href="@{/users/profile/{id}(id = ${currUser.id})}" th:text="${currUser.email}"></a>
 
-                            <li >
-                                <a th:href="@{/logout}"class="btn btn-primary border-width-2 d-none d-lg-inline-block"><span class="mr-2 icon-lock_outline"></span>Выйти</a>
-                            </li>
+                            <a th:href="@{/logout}"class="btn btn-primary border-width-2 d-none d-lg-inline-block"><span class="mr-2 icon-lock_outline"></span>Выйти</a>
+
                         </div>
 
                     </div>

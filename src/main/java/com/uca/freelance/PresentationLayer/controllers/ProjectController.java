@@ -1,6 +1,7 @@
 package com.uca.freelance.PresentationLayer.controllers;
 
 import com.uca.freelance.BussinessLogicLayer.serviceImplementations.JobService;
+import com.uca.freelance.BussinessLogicLayer.serviceImplementations.UserService;
 import com.uca.freelance.DataAccessLayer.entities.Application;
 import com.uca.freelance.DataAccessLayer.entities.Job;
 import com.uca.freelance.DataAccessLayer.entities.User;
@@ -25,9 +26,14 @@ public class ProjectController {
     @Autowired
     private JobService jobService;
 
+    @Autowired
+    private UserService userService;
+
 
     @GetMapping(path = "/projects")
-    public String listUsers(Model model, String keyword){
+    public String listUsers(Model model, String keyword, Principal principal){
+        User currUser = userService.findByEmail(principal.getName());
+        model.addAttribute("currUser", currUser);
         List<Job> jobList;
         String textForSearch = "";
         if(keyword!=null && !keyword.equals("")){
@@ -35,8 +41,10 @@ public class ProjectController {
             jobList = jobService.findByKeyword(keyword);
         }else{
             textForSearch = "Всего работ : ";
-            jobList = jobService.findAll();
+            jobList = jobService.findAllUnstartedJobs();
         }
+
+
         model.addAttribute("textForSearch",textForSearch);
         model.addAttribute("listJobs",jobList);
 

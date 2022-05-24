@@ -30,6 +30,11 @@ public class JobService implements JobServiceInterface {
         return jobRepository.findAll();
     }
 
+    @Override
+    public List<Job> findAllUnstartedJobs() {
+        return jobRepository.findAllUnstartedJobs();
+    }
+
 
     @Override
     public Long deleteById(Long id) {
@@ -45,5 +50,10 @@ public class JobService implements JobServiceInterface {
     @Override
     public List<Job> findByKeyword(String keyword) {
         return jobRepository.findByKeyword(keyword);
+    }
+
+    @Override
+    public List<Job> findByKeywordUnstartedJobs(String keyword) {
+        return jobRepository.findByKeywordUnstartedJobs(keyword);
     }
 }

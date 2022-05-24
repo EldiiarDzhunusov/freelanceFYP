@@ -14,12 +14,15 @@ public interface JobServiceInterface {
 
     List<Job> findAll();
 
+    List<Job> findAllUnstartedJobs();
 
     Long deleteById(Long id);
 
     Job save(Job job);
 
     List<Job> findByKeyword(String keyword);
+
+    List<Job> findByKeywordUnstartedJobs(String keyword);
 
 
 

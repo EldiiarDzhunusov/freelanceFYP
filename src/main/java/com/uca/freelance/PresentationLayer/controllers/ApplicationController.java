@@ -42,16 +42,18 @@ public class ApplicationController {
 
 
     @GetMapping(path = "/application/apply/{id}")
-    public String applyForProject(@PathVariable("id") Long id, Model model){
+    public String applyForProject(@PathVariable("id") Long id, Model model, Principal principal){
         Application application1 = new Application();
         application1.setJobTakeId(id);
         model.addAttribute("application1" , application1);
-
+        User currUser = userService.findByEmail(principal.getName());
+        model.addAttribute("currUser", currUser);
         return "application/create";
     }
 
     @PostMapping(path = "/application/create")
     public String createApplication(@Validated Application application, Principal principal){
+
         User user = userService.findByEmail(principal.getName());
         application.setFreelancer(user);
         Optional<Job> job = jobService.findById(application.getJobTakeId());
@@ -63,14 +65,19 @@ public class ApplicationController {
     }
 
     @GetMapping(path = "/applications")
-    public String listOfAllApplications(Model model){
+    public String listOfAllApplications(Model model, Principal principal){
+        User currUser = userService.findByEmail(principal.getName());
+        model.addAttribute("currUser", currUser);
         List<Application> applicationList = applicationService.findAll();
         model.addAttribute("applicationList", applicationList);
+
         return "application/list";
     }
 
     @GetMapping(path = "/application/{id}")
-    public String applicationDetails(@PathVariable("id") Long id, Model model){
+    public String applicationDetails(@PathVariable("id") Long id, Model model, Principal principal){
+        User currUser = userService.findByEmail(principal.getName());
+        model.addAttribute("currUser", currUser);
         //get users that are active
         model.addAttribute("application1",applicationService.getById(id));
         return "application/details";
@@ -78,8 +85,9 @@ public class ApplicationController {
 
     @GetMapping(path = "/application/approve/{id}")
     public String applicationApprove(@PathVariable("id") Long id, Model model, Principal principal){
-        Application application = applicationService.getById(id);
         User currUser = userService.findByEmail(principal.getName());
+        model.addAttribute("currUser", currUser);
+        Application application = applicationService.getById(id);
         if(application.getJob().getEmployer().getEmail().equals(currUser.getEmail()) || currUser.getRole()== Role.ADMIN){
             application.getJob().setJobStatus(JobStatus.STARTED);
             application.getJob().setPrice(application.getProposedPrice());
@@ -93,8 +101,9 @@ public class ApplicationController {
 
     @GetMapping(path = "/application/reject/{id}")
     public String applicationReject(@PathVariable("id") Long id, Model model, Principal principal){
-        Application application = applicationService.getById(id);
         User currUser = userService.findByEmail(principal.getName());
+        model.addAttribute("currUser", currUser);
+        Application application = applicationService.getById(id);
         if(application.getJob().getEmployer().getEmail().equals(currUser.getEmail()) || currUser.getRole()== Role.ADMIN){
             application.setApplicationStatus(ApplicationStatus.REJECTED);
             applicationService.save(application);
@@ -105,6 +114,7 @@ public class ApplicationController {
 
     @GetMapping(path = "/application/delete/{id}")
     public String applicationDelete(@PathVariable("id") Long id){
+
         try {
             System.out.println(id+2);
             applicationService.deleteById(id);

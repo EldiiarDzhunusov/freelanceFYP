@@ -48,9 +48,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/static/**").permitAll()
-                .antMatchers("/users").authenticated()
+                .antMatchers("/freelancers","index").authenticated()
                 .antMatchers("/jobs").authenticated()
-                .antMatchers("/skills").authenticated()
+                .antMatchers("/projects").authenticated()
                 .anyRequest().permitAll()
                 .and()
                 .formLogin()

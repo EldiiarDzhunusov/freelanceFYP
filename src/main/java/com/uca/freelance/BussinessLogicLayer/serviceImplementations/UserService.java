@@ -18,6 +18,11 @@ public class UserService implements UserServiceInterface {
 
 
     @Override
+    public List<User> findFreelancersByKeyword(String keyword) {
+        return userRepository.findFreelancersByKeyword(keyword);
+    }
+
+    @Override
     public List<User> findByKeyword(String keyword) {
         return userRepository.findByKeyword(keyword);
     }
@@ -30,6 +35,16 @@ public class UserService implements UserServiceInterface {
     @Override
     public List<User> findAll() {
         return userRepository.findAll();
+    }
+
+    @Override
+    public List<User> findAllFreelancers() {
+        return userRepository.findAllFreelancers();
+    }
+
+    @Override
+    public List<User> findAllEmployers() {
+        return userRepository.findAllEmployers();
     }
 
     @Override

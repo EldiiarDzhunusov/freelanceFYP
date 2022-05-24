@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,15 +20,17 @@ public class FreelancerController {
 
 
     @GetMapping(path = "/freelancers")
-    public String listUsers(Model model, String keyword){
+    public String listUsers(Model model, String keyword, Principal principal){
+        User currUser = userService.findByEmail(principal.getName());
+        model.addAttribute("currUser", currUser);
         List<User> userList;
         String textForSearch = "";
         if(keyword!=null && !keyword.equals("")){
             textForSearch = "Фрилансеров по запросу " + keyword + " найдено: ";
-            userList = userService.findByKeyword(keyword);
+            userList = userService.findFreelancersByKeyword(keyword);
         }else{
             textForSearch = "Фрилансеров в портале: ";
-            userList = userService.findAll();
+            userList = userService.findAllFreelancers();
         }
         model.addAttribute("textForSearch",textForSearch);
         model.addAttribute("listUsers",userList);
@@ -36,8 +39,9 @@ public class FreelancerController {
     }
 
     @GetMapping("freelancer/{id}")
-    public String profileInfo(@PathVariable(name = "id") Long id, Model model){
-
+    public String profileInfo(@PathVariable(name = "id") Long id, Model model, Principal principal){
+        User currUser = userService.findByEmail(principal.getName());
+        model.addAttribute("currUser", currUser);
         Optional<User> user = userService.findById(id);
 
         if(user.isPresent()){

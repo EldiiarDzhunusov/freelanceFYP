@@ -45,9 +45,11 @@ public class JobController {
 
     @GetMapping(path = {"/jobs","/jobs/search"})
     public String showAllJobs(Model model, Principal principal, String keyword){
+        User currUser = userService.findByEmail(principal.getName());
+        model.addAttribute("currUser", currUser);
         List<Job> jobs;
         if(keyword!=null){
-            jobs = jobService.findByKeyword(keyword);
+            jobs = jobService.findByKeywordUnstartedJobs(keyword);
         }else{
             jobs = jobService.findAll();
         }
@@ -61,6 +63,8 @@ public class JobController {
 
     @GetMapping("/jobs/{id}")
     public String jobDetails(@PathVariable("id") Long id, Model model, Principal principal){
+        User currUser = userService.findByEmail(principal.getName());
+        model.addAttribute("currUser", currUser);
         Optional<Job> job = jobService.findById(id);
         if(job.isPresent()){
             Optional<User> user = userService.findById(job.get().getAuthorIdToFindEntity());
@@ -82,7 +86,9 @@ public class JobController {
     }
 
     @GetMapping("/jobs/new/{id}")
-    public String showNewJobForm(@PathVariable Long id, Model model){
+    public String showNewJobForm(@PathVariable Long id, Model model, Principal principal){
+        User currUser = userService.findByEmail(principal.getName());
+        model.addAttribute("currUser", currUser);
         Job job = new Job();
         job.setAuthorIdToFindEntity(id);
         model.addAttribute("job",job);
@@ -92,6 +98,7 @@ public class JobController {
 
     @PostMapping("/jobs/create")
     public String createJob(@Validated Job job, @RequestParam("skills[]") String[] skillId){
+
         job.setJobStatus(JobStatus.PENDING);
         List<Skill> skills = new ArrayList<>();
 
@@ -115,7 +122,10 @@ public class JobController {
     //update
 
     @GetMapping("/jobs/edit/{id}")
-    public String editJob(@PathVariable("id") Long id, Model model){
+    public String editJob(@PathVariable("id") Long id, Model model, Principal principal){
+        User currUser = userService.findByEmail(principal.getName());
+        model.addAttribute("currUser", currUser);
+
         Optional<Job> job = jobService.findById(id);
         if(job.isPresent()) {
             List<Skill> skills = skillService.findAll();

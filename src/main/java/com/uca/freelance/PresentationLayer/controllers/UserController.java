@@ -46,6 +46,8 @@ public class UserController {
 
     @PostMapping("/process_register_employer")
     public String processRegisterEmployer(User user){
+
+
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
@@ -65,7 +67,11 @@ public class UserController {
     }
 
     @GetMapping(path = {"/users","/users/search"})
-    public String listUsers(Model model, String keyword){
+    public String listUsers(Model model, String keyword, Principal principal){
+
+        User currUser = userService.findByEmail(principal.getName());
+        model.addAttribute("currUser", currUser);
+
         List<User> userList;
         if(keyword!=null){
             userList = userService.findByKeyword(keyword);
@@ -78,7 +84,11 @@ public class UserController {
     }
 
     @GetMapping("/users/edit/profile/{id}")
-    public String showUpdateForm(@PathVariable("id") Long id, Model model){
+    public String showUpdateForm(@PathVariable("id") Long id, Model model, Principal principal){
+
+        User currUser = userService.findByEmail(principal.getName());
+        model.addAttribute("currUser", currUser);
+
         User user = userService.findById(id).orElseThrow(()
                 -> new IllegalArgumentException("Invalid user Id: " +id));
         model.addAttribute("user",user);
@@ -106,7 +116,7 @@ public class UserController {
         if(user.isPresent()){
             userService.deleteById(id);
 
-            return "redirect:/users";
+            return "redirect:/freelancers";
         }else{
             throw new IllegalArgumentException("User do not have permission to delete this user");
         }
@@ -115,6 +125,9 @@ public class UserController {
 
     @GetMapping("/users/profile/{id}")
     public String profileInfo(@PathVariable(name = "id") Long id, Model model, Principal principal){
+        User currUser = userService.findByEmail(principal.getName());
+        model.addAttribute("currUser", currUser);
+
 
         User user = userService.getById(id);
         User principalUser = userService.findByEmail(principal.getName());
@@ -141,7 +154,10 @@ public class UserController {
     }
 
     @GetMapping("/users/edit/password/{id}")
-    public String showUpdatePasswordForm(@PathVariable(name = "id") Long id,Model model){
+    public String showUpdatePasswordForm(@PathVariable(name = "id") Long id,Model model, Principal principal){
+        User currUser = userService.findByEmail(principal.getName());
+        model.addAttribute("currUser", currUser);
+
         Optional<User> user = userService.findById(id);
 
         if(user.isPresent()){
@@ -163,7 +179,10 @@ public class UserController {
     }
 
     @GetMapping("/users/skills/{id}")
-    public String showUserSkills(@PathVariable(name = "id") Long id,Model model){
+    public String showUserSkills(@PathVariable(name = "id") Long id,Model model, Principal principal){
+
+        User currUser = userService.findByEmail(principal.getName());
+        model.addAttribute("currUser", currUser);
         Optional<User> user = userService.findById(id);
         if(user.isPresent()){
             model.addAttribute("skills",user.get().getUserSkills());
@@ -174,7 +193,10 @@ public class UserController {
     }
 
     @GetMapping("/users/edit/skills/{id}")
-    public String showUpdateSkillsForm(@PathVariable(name = "id") Long id,Model model){
+    public String showUpdateSkillsForm(@PathVariable(name = "id") Long id,Model model, Principal principal){
+        User currUser = userService.findByEmail(principal.getName());
+        model.addAttribute("currUser", currUser);
+
         Optional<User> user = userService.findById(id);
         if(user.isPresent()){
             model.addAttribute("userSkills", user.get().getUserSkills());

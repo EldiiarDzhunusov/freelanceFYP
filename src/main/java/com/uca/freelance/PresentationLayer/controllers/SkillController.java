@@ -27,7 +27,10 @@ public class SkillController {
     private UserService userService;
 
     @GetMapping(path = {"/skills","/skills/search"})
-    public String showSkills(Model model, String keyword){
+    public String showSkills(Model model, String keyword, Principal principal){
+        User currUser = userService.findByEmail(principal.getName());
+        model.addAttribute("currUser", currUser);
+
         List<Skill> listSkills;
         if(keyword!=null){
             listSkills = skillService.findByKeyword(keyword);
@@ -40,6 +43,10 @@ public class SkillController {
 
     @GetMapping("/skills/{id}")
     public String skillDetails(@PathVariable("id") Long id, Model model, Principal principal){
+
+        User currUser = userService.findByEmail(principal.getName());
+        model.addAttribute("currUser", currUser);
+
         Skill skill = skillService.getById(id);
         model.addAttribute("skill",skill);
         User user = userService.findByEmail(principal.getName());
@@ -53,7 +60,10 @@ public class SkillController {
     }
 
     @GetMapping("/skills/edit/{id}")
-    public String skillsEdit(@PathVariable("id") Long id, Model model){
+    public String skillsEdit(@PathVariable("id") Long id, Model model, Principal principal){
+        User currUser = userService.findByEmail(principal.getName());
+        model.addAttribute("currUser", currUser);
+
         Skill skill = skillService.getById(id);
         model.addAttribute("skill",skill);
         return "skill/update";
@@ -66,7 +76,11 @@ public class SkillController {
     }
 
     @GetMapping("/skills/new")
-    public String showNewSkillForm(Model model){
+    public String showNewSkillForm(Model model, Principal principal){
+
+        User currUser = userService.findByEmail(principal.getName());
+        model.addAttribute("currUser", currUser);
+
         model.addAttribute("skill", new Skill());
         return "skill/create_form";
     }
@@ -79,6 +93,8 @@ public class SkillController {
 
     @GetMapping("/skills/delete/{id}")
     public String deleteSkill(@PathVariable("id") Long id){
+
+
         skillService.deleteById(id);
         return "redirect:/skills";
     }

@@ -23,6 +23,8 @@ public class MainController {
 
     @GetMapping("/")
     public String mainPage(Model model, Principal principal){
+        User currUser = userService.findByEmail(principal.getName());
+        model.addAttribute("currUser", currUser);
 //        if(userService.findByEmail(principal.getName()).getRole()== Role.EMPLOYER){
             return "redirect:/freelancers";
 //        }else{
