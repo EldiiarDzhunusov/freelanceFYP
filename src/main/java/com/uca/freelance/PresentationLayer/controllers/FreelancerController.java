@@ -2,7 +2,6 @@ package com.uca.freelance.PresentationLayer.controllers;
 
 import com.uca.freelance.BussinessLogicLayer.serviceImplementations.UserService;
 import com.uca.freelance.DataAccessLayer.entities.User;
-import com.uca.freelance.DataAccessLayer.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
-public class Freelancers {
+public class FreelancerController {
 
     @Autowired
     private UserService userService;
@@ -45,7 +44,7 @@ public class Freelancers {
             model.addAttribute("user",user.get());
             return "freelancer/details";
         }else{
-            return "main_page";
+            return null;
         }
     }
 }

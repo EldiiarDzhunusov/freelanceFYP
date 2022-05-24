@@ -61,8 +61,8 @@
         <ul class="job-listings mb-2" th:each="job: ${listJobs}">
             <li class="job-listing d-block d-sm-flex pb-3 pb-sm-0 align-items-center" >
                 <a th:href="@{/jobs/{id}(id=${job.id})}"></a>
-                <div class="job-listing-logo">
-
+                <div class="job-listing-logo" align="center">
+                    <p th:text="${job.getPrice()}+' $'" ></p>
                 </div>
                 <div class="job-listing-about d-sm-flex custom-width w-100 justify-content-between mx-4">
                     <div class="job-listing-position custom-width w-50 mb-3 mb-sm-0" >

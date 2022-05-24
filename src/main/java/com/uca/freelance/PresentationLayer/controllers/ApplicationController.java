@@ -13,8 +13,10 @@ import com.uca.freelance.DataAccessLayer.repositories.ApplicationRepository;
 import com.uca.freelance.DataAccessLayer.repositories.JobRepository;
 import com.uca.freelance.DataAccessLayer.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -79,6 +81,7 @@ public class ApplicationController {
         User currUser = userService.findByEmail(principal.getName());
         if(application.getJob().getEmployer().getEmail().equals(currUser.getEmail()) || currUser.getRole()== Role.ADMIN){
             application.getJob().setJobStatus(JobStatus.STARTED);
+            application.getJob().setPrice(application.getProposedPrice());
             application.setApplicationStatus(ApplicationStatus.ACCEPTED);
             application.getJob().setFreelancer(application.getFreelancer());
             applicationService.save(application);
@@ -92,11 +95,23 @@ public class ApplicationController {
         Application application = applicationService.getById(id);
         User currUser = userService.findByEmail(principal.getName());
         if(application.getJob().getEmployer().getEmail().equals(currUser.getEmail()) || currUser.getRole()== Role.ADMIN){
-
             application.setApplicationStatus(ApplicationStatus.REJECTED);
             applicationService.save(application);
             return "redirect:/application/"+id;
         }
         return null;
     }
+
+    @GetMapping(path = "/application/delete/{id}")
+    public String applicationDelete(@PathVariable("id") Long id){
+        try {
+            System.out.println(id+2);
+            applicationService.deleteById(id);
+        }catch (Exception e){
+            System.out.println("DELETION ERROR");
+        }
+        return "redirect:/applications";
+    }
+
+
 }

@@ -96,9 +96,8 @@ public class UserController {
 
         userService.save(user);
 
-        List<User> userList = userService.findAll();
-        model.addAttribute("listUsers",userList);
-        return "user/list";
+
+        return "redirect:/users/profile/"+id;
     }
 
     @GetMapping("/users/delete/{id}")
@@ -124,8 +123,10 @@ public class UserController {
 
             model.addAttribute("user",user);
             if(user.getRole()==Role.EMPLOYER){
+                model.addAttribute("listJobs", user.getJobsOwned());
                 return "employer/details";
             }else{
+                model.addAttribute("listJobs", user.getJobsDoing());
                 return "freelancer/details";
             }
 
@@ -157,9 +158,7 @@ public class UserController {
         user.setPassword(encodedPassword);
         userService.save(user);
 
-        List<User> userList = userService.findAll();
-        model.addAttribute("listUsers",userList);
-        return "user/list";
+        return "redirect:/users/profile/"+id;
     }
 
     @GetMapping("/users/skills/{id}")
@@ -203,9 +202,9 @@ public class UserController {
         if(user.isPresent()){
             user.get().setUserSkills(skills);
             userService.save(user.get());
-            return "redirect:/users/skills/"+id;
+            return "redirect:/users/profile/"+id;
         }
-        return "redirect:/users/skills/"+id;
+        return null;
     }
 
 

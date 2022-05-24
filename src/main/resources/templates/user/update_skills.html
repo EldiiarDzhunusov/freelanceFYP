@@ -1,43 +1,52 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="ISO-8859-1">
-    <title>Update Skills</title>
+    <meta charset="UTF-8">
+    <title th:text="${user.getEmail()}"></title>
+    <div th:insert="template.html::imports"></div>
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('.js-example-basic-multiple').select2({
-                tags: true,
-                tokenSeparators: [',', ' ']
-                }
-            );
-        });
-    </script>
 </head>
 <body>
-<div class="container text-center">
-    <div>
-        <h1>Update Skills</h1>
-    </div>
-    <form th:action="@{/users/update/skills/{id}(id = ${user.id})}" th:object="${userSkills}"
-          method="post" style="max-width: 600px; margin: 0 auto;">
-        <select class="js-example-basic-multiple" name="skills[]" multiple="multiple">
 
-            <option th:each="skill : ${skills}" th:value="${skill.getId()}" th:text="${skill.getName()}"></option>
+<section class="site-section ">
+    <div class="container">
+        <div class="col-lg-6">
+            <h2 class="mb-4">Обновить Навыки</h2>
 
-        </select>
-        <div>
-            <button type="submit" class="btn btn-primary">Update</button>
+            <form th:action="@{/users/update/skills/{id}(id = ${user.id})}" th:object="${userSkills}"
+                  method="post" style="max-width: 600px; margin: 0 auto;">
+                <div class="m-3">
+                    <div class="form-group row">
+                        <select class="js-example-basic-multiple" name="skills[]" multiple="multiple" >
+
+                            <option th:each="skill : ${skills}" th:value="${skill.getId()}" th:text="${skill.getName()}"></option>
+
+                        </select>
+                    </div>
+
+
+
+                    <div>
+                        <button type="submit" class="btn btn-primary">Обновить</button>
+                    </div>
+                </div>
+            </form>
+
+
+
         </div>
-    </form>
-
-
-
-
-</div>
-
+    </div>
+</section>
+<script>
+    $(document).ready(function() {
+        $('.js-example-basic-multiple').select2({
+                tags: true,
+                tokenSeparators: [',', ' ']
+            }
+        );
+    });
+</script>
 </body>
-
 </html>

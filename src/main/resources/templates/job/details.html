@@ -31,6 +31,10 @@
         <th>Description</th>
         <th>Job Status</th>
         <th>Author</th>
+        <div th:if="${job.getFreelancer()!=null}">
+          <th>Freelancer</th>
+        </div>
+
       </tr>
       </thead>
       <tbody>
@@ -40,10 +44,17 @@
         <td th:text="${job.name}">Name</td>
         <td th:text="${job.price}">Price</td>
         <td th:text="${job.description}">Description</td>
+
         <td th:text="${job.getJobStatus()}">Job Status</td>
         <td>
           <a th:href="@{/users/profile/{id}(id=${job.getEmployer().getId()})}">Author</a>
         </td>
+        <div th:if="${job.getFreelancer()!=null}">
+          <td>
+            <a th:href="@{/users/profile/{id}(id=${job.getFreelancer().getId()})}">Freelancer</a>
+          </td>
+        </div>
+
       </tr>
       </tbody>
     </table>

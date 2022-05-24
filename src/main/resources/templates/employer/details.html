@@ -1,59 +1,103 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="ISO-8859-1">
-    <title th:text="${user.getFullNameAbbreviation()}"></title>
+    <meta charset="UTF-8">
+    <title th:text="${user.getEmail()}"></title>
+    <div th:insert="template.html::imports"></div>
 </head>
 <body>
-<div class="container text-center">
-    <div>
-        <h1 th:text="${user.getFullNameAbbreviation()}"></h1>
+<div id="overlayer"></div>
+<div class="loader">
+    <div class="spinner-border text-primary" role="status">
+        <span class="sr-only">Loading...</span>
     </div>
-    <div>
-        <h2>  <a th:href="@{/users/edit/password/{id}(id=${user.id})}">Update password </a></h2>
-    </div>
-
-    <td th:each="user : ${user}">
-        <p>
-            <a th:href="@{~/users/edit/profile/{id}(id = ${user.id})}">Edit</a>
-            <a th:href="@{~/users/skills/{id}(id = ${user.id})}">Skills</a>
-        </p>
-        <p th:text="${user.email}"></p>
-        <p th:text="${user.firstName}"></p>
-        <p th:text="${user.lastName}"></p>
-
-    </td>
-
-
-        <div align="left">
-            <h2>Jobs Posted</h2>
-        </div>
-
-        <div>
-            <table class="table table-striped table-bordered">
-                <thead class="thead-dark">
-                <tr>
-                    <th>Job ID</th>
-                    <th>Description</th>
-                    <th>Price</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="job: ${user.jobsOwned}">
-                    <td th:text="${job.id}"></td>
-                    <td th:text="${job.description}"></td>
-                    <td th:text="${job.price}"></td>
-                    <td th:text="${job.getJobStatus()}"></td>
-                    <td>
-                        <a th:href="@{/jobs/{id}(id=${job.id})}">Details</a>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-
 </div>
+<div th:insert="template.html::header"></div>
+
+
+<section class="section-hero overlay inner-page bg-image" style="background-image: url('/images/img_hall.jpg');" id="home-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="text-white" th:text="${user.getFullNameAbbreviation()}"></h1>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="site-section" id="next-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 blog-content">
+
+                <h2 class="mb-4">Описание</h2>
+
+
+                <h5 th:text="${user.description}"></h5>
+
+            </div>
+            <div class="col-lg-4 sidebar pl-lg-5">
+
+                <div class="sidebar-box">
+
+                    <h3>О работодателе</h3>
+                    <h7 th:text="'Имя: ' +${user.getFirstName()}"></h7><br>
+                    <h7 th:text="'Фамилия: ' +${user.getLastName()}"></h7><br>
+                    <h7 th:text="'Email: ' +${user.getEmail()}"></h7><br><br>
+                </div>
+                <p><a th:href="@{~/users/edit/profile/{id}(id = ${user.id})}" class="btn btn-primary btn-sm">Изменить Профиль</a> | <a th:href="@{/users/edit/password/{id}(id=${user.id})}" class="btn btn-primary btn-sm">Поменять Пароль</a></p>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="site-section" id="jobs" style="padding-top: 0 !important;">
+    <div class="container">
+
+
+        <div class="row mb-5 justify-content-center">
+            <div class="col-md-7 text-center">
+                <h2 class="section-title mb-2" th:text="'Опубликованные Работы'" ></h2>
+            </div>
+        </div>
+
+
+
+        <ul class="job-listings mb-2" th:each="job: ${listJobs}">
+            <li class="job-listing d-block d-sm-flex pb-3 pb-sm-0 align-items-center" >
+                <a th:href="@{/jobs/{id}(id=${job.id})}"></a>
+                <div class="job-listing-logo" align="center">
+                    <p th:text="${job.getPrice()}+' $'" ></p>
+                </div>
+                <div class="job-listing-about d-sm-flex custom-width w-100 justify-content-between mx-4">
+                    <div class="job-listing-position custom-width w-50 mb-3 mb-sm-0" >
+                        <div style="margin: 10px">
+                            <h2 th:text="${job.getName()}"></h2>
+                            <br>
+                            <h5 th:text="${job.getDescription()}"></h5>
+                        </div>
+
+                    </div>
+                    <div class="job-listing-location mb-3 mb-sm-0 custom-width w-25">
+                        <div style="margin: 10px">
+                            <span class="" th:text="${job.getSkillsToString()}"></span>
+                        </div>
+                    </div>
+                    <div class="job-listing-meta">
+                        <span class="badge badge-success">Подробнее</span>
+                    </div>
+                </div>
+
+            </li>
+
+
+        </ul>
+
+    </div>
+</section>
+
+
+<div th:insert="template.html::footer"></div>
+<div th:insert="template.html::scripts"></div>
 </body>
 </html>
