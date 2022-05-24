@@ -1,3 +1,1 @@
-Hopefully the final project
-
-Need to add wiki
+Bachelor Computer Science Final Year Project
