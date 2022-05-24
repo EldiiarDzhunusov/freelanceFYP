@@ -58,7 +58,7 @@ public class ApplicationController {
         application.setJob(job.get());
         application.setApplicationStatus(ApplicationStatus.PENDING);
         applicationService.save(application);
-        return "redirect:/applications";
+        return "redirect:/jobs/"+application.getJobTakeId();
 
     }
 

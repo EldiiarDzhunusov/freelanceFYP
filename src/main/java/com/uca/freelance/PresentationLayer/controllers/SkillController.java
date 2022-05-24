@@ -1,7 +1,10 @@
 package com.uca.freelance.PresentationLayer.controllers;
 
 import com.uca.freelance.BussinessLogicLayer.serviceImplementations.SkillService;
+import com.uca.freelance.BussinessLogicLayer.serviceImplementations.UserService;
 import com.uca.freelance.DataAccessLayer.entities.Skill;
+import com.uca.freelance.DataAccessLayer.entities.User;
+import com.uca.freelance.DataAccessLayer.models.Role;
 import com.uca.freelance.DataAccessLayer.repositories.SkillRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -18,6 +22,9 @@ public class SkillController {
 
     @Autowired
     private SkillService skillService;
+
+    @Autowired
+    private UserService userService;
 
     @GetMapping(path = {"/skills","/skills/search"})
     public String showSkills(Model model, String keyword){
@@ -32,9 +39,16 @@ public class SkillController {
     }
 
     @GetMapping("/skills/{id}")
-    public String skillDetails(@PathVariable("id") Long id, Model model){
+    public String skillDetails(@PathVariable("id") Long id, Model model, Principal principal){
         Skill skill = skillService.getById(id);
         model.addAttribute("skill",skill);
+        User user = userService.findByEmail(principal.getName());
+        boolean isAdmin = user.getRole().equals(Role.ADMIN);
+        boolean isFreelancer = user.getRole().equals(Role.FREELANCER);
+        boolean isEmployer = user.getRole().equals(Role.EMPLOYER);
+        model.addAttribute("isAdmin", isAdmin);
+        model.addAttribute("isFreelancer",isFreelancer);
+        model.addAttribute("isEmployer", isEmployer);
         return "skill/details";
     }
 

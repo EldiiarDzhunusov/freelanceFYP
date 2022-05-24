@@ -67,18 +67,18 @@
                 <div class="job-listing-about d-sm-flex custom-width w-100 justify-content-between mx-4">
                     <div class="job-listing-position custom-width w-50 mb-3 mb-sm-0" >
                         <div style="margin: 10px">
-                            <h2 th:text="${job.getName()}"></h2>
+                            <h2 th:text="${job.getName()}" style="word-break: break-all;"></h2>
                             <br>
-                            <h5 th:text="${job.getDescription()}"></h5>
+                            <h5 th:text="${job.getDescription()}" style="word-break: break-all;"></h5>
                         </div>
 
                     </div>
                     <div class="job-listing-location mb-3 mb-sm-0 custom-width w-25">
-                        <div style="margin: 10px">
+                        <div style="margin: 10px;" align="center">
                             <span class="" th:text="${job.getSkillsToString()}"></span>
                         </div>
                     </div>
-                    <div class="job-listing-meta">
+                    <div class="job-listing-meta" style="margin: 10px">
                         <span class="badge badge-success">Подробнее</span>
                     </div>
                 </div>
