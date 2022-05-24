@@ -71,6 +71,7 @@ public class ApplicationController {
 
     @GetMapping(path = "/application/{id}")
     public String applicationDetails(@PathVariable("id") Long id, Model model){
+        //get users that are active
         model.addAttribute("application1",applicationService.getById(id));
         return "application/details";
     }
@@ -85,7 +86,7 @@ public class ApplicationController {
             application.setApplicationStatus(ApplicationStatus.ACCEPTED);
             application.getJob().setFreelancer(application.getFreelancer());
             applicationService.save(application);
-            return "redirect:/application/"+id;
+            return "redirect:/jobs/"+application.getJob().getId();
         }
         return null;
     }
@@ -97,7 +98,7 @@ public class ApplicationController {
         if(application.getJob().getEmployer().getEmail().equals(currUser.getEmail()) || currUser.getRole()== Role.ADMIN){
             application.setApplicationStatus(ApplicationStatus.REJECTED);
             applicationService.save(application);
-            return "redirect:/application/"+id;
+            return "redirect:/jobs/"+application.getJob().getId();
         }
         return null;
     }
