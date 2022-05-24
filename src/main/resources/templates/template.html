@@ -50,7 +50,7 @@
                         <li><a href="/" >Найти фрилансеров</a></li>
                         <li><a href="projects">Найти работу</a></li>
                         <li><a href="skills2">Найти по навыкам</a></li>
-                        <li class="d-lg-none"><a href="login">Войти</a></li>
+                        <li class="d-lg-none"><a href="/logout">Выйти</a></li>
                     </ul>
                 </nav>
 
@@ -59,7 +59,7 @@
 
                         <div sec:authorize="!isAuthenticated()">
 
-                            <li ><a href="login" class="btn btn-primary border-width-2 d-none d-lg-inline-block"><span class="mr-2 icon-lock_outline"></span>Войти</a></li>
+                            <li ><a th:href="@{/login}" class="btn btn-primary border-width-2 d-none d-lg-inline-block"><span class="mr-2 icon-lock_outline"></span>Войти</a></li>
                         </div>
                         <div sec:authorize="isAuthenticated()">
 

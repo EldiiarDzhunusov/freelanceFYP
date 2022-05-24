@@ -9,6 +9,7 @@ import com.uca.freelance.DataAccessLayer.entities.Job;
 import com.uca.freelance.DataAccessLayer.entities.Skill;
 import com.uca.freelance.DataAccessLayer.entities.User;
 import com.uca.freelance.DataAccessLayer.models.JobStatus;
+import com.uca.freelance.DataAccessLayer.models.Role;
 import com.uca.freelance.DataAccessLayer.repositories.JobRepository;
 import com.uca.freelance.DataAccessLayer.repositories.SkillRepository;
 import com.uca.freelance.DataAccessLayer.repositories.UserRepository;
@@ -59,11 +60,13 @@ public class JobController {
     }
 
     @GetMapping("/jobs/{id}")
-    public String jobDetails(@PathVariable("id") Long id, Model model){
+    public String jobDetails(@PathVariable("id") Long id, Model model, Principal principal){
         Optional<Job> job = jobService.findById(id);
         if(job.isPresent()){
             Optional<User> user = userService.findById(job.get().getAuthorIdToFindEntity());
-
+            boolean isAdmin = user.get().getEmail().equals(principal.getName())
+                    || userService.findByEmail(principal.getName()).getRole()== Role.ADMIN;
+            model.addAttribute("isAdmin",isAdmin);
             model.addAttribute("user",user.get());
             model.addAttribute("job",job.get());
             return "job/details";
@@ -107,7 +110,7 @@ public class JobController {
         job.setEmployer(userService.getById(job.getAuthorIdToFindEntity()));
         job.setJobSkills(skills);
         jobService.save(job);
-        return "redirect:/jobs";
+        return "redirect:/jobs/"+job.getId();
     }
     //update
 
@@ -137,7 +140,9 @@ public class JobController {
             }
 
         }
+        job.setEmployer(jobService.getById(job.getAuthorIdToFindEntity()).getEmployer());
         job.setJobSkills(skills);
+        job.setJobStatus(JobStatus.PENDING);
         jobService.save(job);
 
         return "redirect:/jobs/"+id;

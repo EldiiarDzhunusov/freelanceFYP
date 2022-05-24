@@ -38,7 +38,7 @@
 
                 </div>
                 <div class="col-lg-4 sidebar pl-lg-5">
-                    <p><a th:href="@{~/users/edit/skills/{id}(id = ${user.id})}" class="btn btn-primary btn-sm">Изменить Навыки</a>
+                    <p th:if="${isAdmin}"><a th:href="@{~/users/edit/skills/{id}(id = ${user.id})}" class="btn btn-primary btn-sm">Изменить Навыки</a>
                     <div class="sidebar-box">
 
                         <h3>Навыки</h3>
@@ -48,7 +48,7 @@
                         </div>
 
                     </div>
-                    <p><a th:href="@{~/users/edit/profile/{id}(id = ${user.id})}" class="btn btn-primary btn-sm">Изменить Профиль</a> | <a th:href="@{/users/edit/password/{id}(id=${user.id})}" class="btn btn-primary btn-sm">Поменять Пароль</a></p>
+                    <p th:if="${isAdmin}"><a th:href="@{~/users/edit/profile/{id}(id = ${user.id})}" class="btn btn-primary btn-sm">Изменить Профиль</a> | <a th:href="@{/users/edit/password/{id}(id=${user.id})}" class="btn btn-primary btn-sm">Поменять Пароль</a></p>
 
                 </div>
             </div>
@@ -87,7 +87,7 @@
                                 <span class="" th:text="${job.getSkillsToString()}"></span>
                             </div>
                         </div>
-                        <div class="job-listing-meta">
+                        <div class="job-listing-meta" style="margin: 10px">
                             <span class="badge badge-success">Подробнее</span>
                         </div>
                     </div>

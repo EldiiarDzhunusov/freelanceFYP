@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="ISO-8859-1">
-    <title>Job Creation form</title>
-    <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css" />
+    <meta charset="UTF-8">
+    <title>Freelance Platform</title>
+    <div th:insert="template.html::imports"></div>
+
     <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
     <script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
 
@@ -22,57 +23,78 @@
     </script>
 </head>
 <body>
-<div class="container text-center">
-    <div>
-        <h1>New Job</h1>
-    </div>
-    <form th:action="@{/jobs/create}" th:object="${job}"
-          method="post" style="max-width: 600px; margin: 0 auto;">
 
-        <input type="hidden" th:field="*{authorIdToFindEntity}" value="th:text='${job.authorId}'"  class="form-control"  />
+<div th:insert="template.html::header"></div>
 
-
-        <div class="m-3">
-            <div class="form-group row">
-                <label class="col-4 col-form-label">Name </label>
-                <div class="col-8">
-                    <input type="text" th:field="*{name}" class="form-control" required />
-                </div>
-            </div>
-
-            <div class="form-group row">
-                <label class="col-4 col-form-label">Description </label>
-                <div class="col-8">
-                    <input type="text" th:field="*{description}" class="form-control"
-                           required minlength="6" maxlength="250"/>
-                </div>
-            </div>
-
-            <div class="form-group row">
-                <label class="col-4 col-form-label">Price: </label>
-                <div class="col-8">
-                    <input type="number" step="0.1" th:field="*{price}" class="form-control"
-                           required minlength="2" maxlength="20"/>
-                </div>
-            </div>
-            <div class="form-group row">
-                <label class="col-4 col-form-label">Skills Required: </label>
-                <select class="js-example-basic-multiple" name="skills[]" multiple="multiple">
-
-                    <option th:each="skill : ${skills}" th:value="${skill.getId()}" th:text="${skill.getName()}"></option>
-
-                </select>
-            </div>
-
-
-
-
-
-            <div>
-                <button type="submit" class="btn btn-primary">Create</button>
+<!-- HOME -->
+<section class="section-hero overlay inner-page bg-image" style="background-image: url('/images/img_hall.jpg');" id="home-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="text-white" th:text="'Форма Создания Работы'"></h1>
             </div>
         </div>
-    </form>
-</div>
+    </div>
+</section>
+
+
+<section class="site-section ">
+    <div class="container">
+        <div class="col-lg-6">
+            <h2 class="mb-4">Создать Работу</h2>
+
+            <form th:action="@{/jobs/create}" th:object="${job}"
+                  method="post" style="max-width: 600px; margin: 0 auto;">
+
+                <input type="hidden" th:field="*{authorIdToFindEntity}" value="th:text='${job.authorId}'"  class="form-control"  />
+                <div class="m-3">
+                    <div class="form-group row">
+                        <label class="col-4 col-form-label">Название: </label>
+                        <div class="col-8">
+                            <input type="text" th:field="*{name}" class="form-control" required />
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-4 col-form-label">Описание: </label>
+                        <div class="col-8">
+                            <textarea  rows="5" th:field="*{description}" class="form-control"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-4 col-form-label">Цена: </label>
+                        <div class="col-8">
+                            <input type="number" step="0.2" th:field="*{price}" class="form-control"
+                                   required minlength="6" maxlength="64"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-4 col-form-label">Требуемые Навыки: </label>
+                        <div class="col-8" >
+                        <select  class="js-example-basic-multiple" name="skills[]" multiple="multiple" >
+
+                            <option th:each="skill : ${skills}" th:value="${skill.getId()}" th:text="${skill.getName()}"></option>
+
+                        </select>
+                        </div>
+                    </div>
+
+
+
+
+                    <div>
+                        <button type="submit" class="btn btn-primary">Создать Работу</button>
+                    </div>
+                </div>
+            </form>
+
+
+        </div>
+    </div>
+</section>
+
+<div th:insert="template.html::footer"></div>
 </body>
 </html>

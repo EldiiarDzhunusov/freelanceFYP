@@ -118,8 +118,9 @@ public class UserController {
 
         User user = userService.getById(id);
         User principalUser = userService.findByEmail(principal.getName());
-
-        if(principalUser.getId()==user.getId() || principalUser.getRole()==Role.ADMIN){
+        boolean isAdmin = true;
+        model.addAttribute("isAdmin", isAdmin);
+//        if(principalUser.getId()==user.getId() || principalUser.getRole()==Role.ADMIN){
 
             model.addAttribute("user",user);
             if(user.getRole()==Role.EMPLOYER){
@@ -130,11 +131,11 @@ public class UserController {
                 return "freelancer/details";
             }
 
-        }
-        //think what link should be here
-        else{
-            return "index";
-        }
+//        }
+//        //think what link should be here
+//        else{
+//            return "index";
+//        }
 
 
     }
