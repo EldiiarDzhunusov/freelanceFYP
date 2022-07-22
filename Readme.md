@@ -5,10 +5,10 @@ Bachelor Computer Science Final Year Project
 Freelance platforms are a marketplace for businesses and freelance workers from all over the world.
 
 ## Image 1
-![](img/img1.png)
+![](img/img_1.png)
 ## Image 2
-![](img/img2.png)
+![](img/img_2.png)
 ## Image 3
-![](img/img3.png)
+![](img/img_3.png)
 ## Image 4
-![](img/img4.png)
+![](img/img_4.png)
