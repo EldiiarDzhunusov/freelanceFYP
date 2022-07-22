@@ -12,3 +12,5 @@ Freelance platforms are a marketplace for businesses and freelance workers from 
 ![](img/img_3.png)
 ## Image 4
 ![](img/img_4.png)
+## Image 5
+![](img/img_5.png)
